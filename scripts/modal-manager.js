@@ -16,31 +16,31 @@ var Game;
         ModalManager.prototype.openModalStart = function () {
             this.setStartButtonHandler();
             this.addBackdrop();
-            this.modalStart.show();
+            this.modalStart.addClass('modal-visible');
         };
         ModalManager.prototype.closeModalStart = function () {
             this.removeBackdrop();
-            this.modalStart.hide();
+            this.modalStart.removeClass('modal-visible');
         };
         ModalManager.prototype.openModalMidGame = function (content) {
             this.setNextButtonHandler();
             this.setQuestionResult(content);
             this.addBackdrop();
-            this.modalMidGame.show();
+            this.modalMidGame.addClass('modal-visible');
         };
         ModalManager.prototype.closeModalMidGame = function () {
             this.removeBackdrop();
-            this.modalMidGame.hide();
+            this.modalMidGame.removeClass('modal-visible');
         };
         ModalManager.prototype.openModalGameOver = function (content) {
             this.setPlayAgainButtonHandler();
             this.setGameResult(content);
             this.addBackdrop();
-            this.modalGameOver.show();
+            this.modalGameOver.addClass('modal-visible');
         };
         ModalManager.prototype.closeModalGameOver = function () {
             this.removeBackdrop();
-            this.modalGameOver.hide();
+            this.modalGameOver.removeClass('modal-visible');
         };
         ModalManager.prototype.setNextButtonHandler = function () {
             var _this = this;

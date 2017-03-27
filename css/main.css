@@ -71,6 +71,9 @@ body {
     height: 494px;
     background-image: url('../img/map4.png');
     box-shadow: inset 0px -5px 5px 0px rgba(0, 0, 0, 0.05);
+    -webkit-perspective: 1300px;
+	-moz-perspective: 1300px;
+	perspective: 1300px;
 }
 
 .map-game-wrapper .map-content .map-backdrop {
@@ -86,24 +89,38 @@ body {
 
 .map-game-wrapper .map-content .modal {
     overflow: visible;
+    position: absolute;
+    display: block;
+    z-index: -1000;
+    -webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: rotateX(-70deg);
+	-moz-transform: rotateX(-70deg);
+	-ms-transform: rotateX(-70deg);
+	transform: rotateX(-70deg);
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+	opacity: 0;
+}
+
+.map-game-wrapper .map-content .modal.modal-visible {
+    -webkit-transform: rotateX(0deg);
+	-moz-transform: rotateX(0deg);
+	-ms-transform: rotateX(0deg);
+	transform: rotateX(0deg);
+	opacity: 1;
+    z-index: 1000;
 }
 
 .map-game-wrapper .map-content .modal.modal-start {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 35%;
 }
 
-.map-game-wrapper .map-content .modal.modal-mid-game {
-    position: absolute;
-    top: 30%;
-    transform: translateY(-30%);
-}
-
+.map-game-wrapper .map-content .modal.modal-mid-game,
 .map-game-wrapper .map-content .modal.modal-gameover {
-    position: absolute;
-    top: 30%;
-    transform: translateY(-30%);
+    top: 20%;
 }
 
 .map-game-wrapper .map-content .modal .modal-dialog {
@@ -125,12 +142,6 @@ body {
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#ffffff', GradientType=0);
     /* IE6-9 */
     border: 3px solid #23a127;
-}
-
-.map-game-wrapper .map-content .modal-start,
-.map-game-wrapper .map-content .modal-mid-game,
-.map-game-wrapper .map-content .modal-gameover {
-    display: none;
 }
 
 .map-game-wrapper .map-content .modal-mid-game .question-details,

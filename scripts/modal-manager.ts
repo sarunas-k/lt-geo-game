@@ -37,36 +37,36 @@ module Game {
         public openModalStart(): void {
             this.setStartButtonHandler();
             this.addBackdrop();
-            this.modalStart.show();
+            this.modalStart.addClass('modal-visible');
         }
     
         private closeModalStart(): void {
             this.removeBackdrop();
-            this.modalStart.hide();
+            this.modalStart.removeClass('modal-visible');
         }
         
         public openModalMidGame(content: string): void {
             this.setNextButtonHandler();
             this.setQuestionResult(content);
             this.addBackdrop();
-            this.modalMidGame.show();
+            this.modalMidGame.addClass('modal-visible');
         }
         
         private closeModalMidGame(): void {
             this.removeBackdrop();
-            this.modalMidGame.hide();
+            this.modalMidGame.removeClass('modal-visible');
         }
 
         public openModalGameOver(content: string): void {
             this.setPlayAgainButtonHandler();
             this.setGameResult(content);
             this.addBackdrop();
-            this.modalGameOver.show();
+            this.modalGameOver.addClass('modal-visible');
         }
 
         public closeModalGameOver(): void {
             this.removeBackdrop();
-            this.modalGameOver.hide();
+            this.modalGameOver.removeClass('modal-visible');
         }
     
         private setNextButtonHandler(): void {
