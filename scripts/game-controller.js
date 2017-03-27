@@ -43,8 +43,12 @@ var Game;
         }
         GameController.prototype.subscribeEvents = function () {
             var _this = this;
-            eventManager.subscribe(Game.EventNames.ModalStartGame, function () { _this.begin(); });
-            eventManager.subscribe(Game.EventNames.ModalNextLevelClicked, function () { _this.begin(++_this.level); });
+            eventManager.subscribe(Game.EventNames.ModalStartGame, function () {
+                _this.begin();
+            });
+            eventManager.subscribe(Game.EventNames.ModalNextLevelClicked, function () {
+                _this.begin(++_this.level);
+            });
         };
         GameController.prototype.addLocations = function () {
             this.locations = [{
@@ -618,8 +622,12 @@ var Game;
                 _this.scoreElement.text(_this.totalPoints);
                 _this.scoreElement.css('opacity', '1');
             }, 300);
-            setTimeout(function () { _this.scoreElement.addClass('bump-animate'); }, 300);
-            setTimeout(function () { _this.scoreElement.removeClass('bump-animate'); }, 600);
+            setTimeout(function () {
+                _this.scoreElement.addClass('bump-animate');
+            }, 300);
+            setTimeout(function () {
+                _this.scoreElement.removeClass('bump-animate');
+            }, 600);
         };
         GameController.prototype.clearScore = function () {
             this.totalPoints = 0;
@@ -654,7 +662,11 @@ var Game;
                 left: x,
                 top: y
             })
-                .animate({ opacity: 1 }, { duration: 200 })
+                .animate({
+                opacity: 1
+            }, {
+                duration: 200
+            })
                 .appendTo(this.map)
                 .show();
         };

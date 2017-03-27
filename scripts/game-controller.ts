@@ -51,7 +51,7 @@ module Game {
             green: '#5cb85c',
             yellow: '#ffae22'
         };
-    
+
         constructor() {
             this.addLocations();
             this.addQuestions();
@@ -61,8 +61,12 @@ module Game {
         }
 
         private subscribeEvents(): void {
-            eventManager.subscribe(EventNames.ModalStartGame, () => { this.begin(); });
-            eventManager.subscribe(EventNames.ModalNextLevelClicked, () => { this.begin(++this.level); });
+            eventManager.subscribe(EventNames.ModalStartGame, () => {
+                this.begin();
+            });
+            eventManager.subscribe(EventNames.ModalNextLevelClicked, () => {
+                this.begin(++this.level);
+            });
         }
 
         private addLocations(): void {
@@ -583,7 +587,7 @@ module Game {
                 this.coordinatesText.text('X=' + this.clickCoordinates.x + ' Y=' + this.clickCoordinates.y);
             });
         }
-        
+
         private calculateDistance(x1: number, y1: number, x2: number, y2: number): number {
             if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2))
                 return;
@@ -596,14 +600,14 @@ module Game {
                 return;
             return Math.round(value / this.scaleFactor);
         }
-        
+
         private getCoordinatesRelativeToImage(pageX: number, pageY: number): ICoordinates {
             return {
                 x: pageX - this.mapOffset.left,
                 y: pageY - this.mapOffset.top
             };
         }
-        
+
         private bindClickForQuestion(question: IQuestion): void {
             this.map.one('click', (event: JQueryEventObject) => {
                 this.handleAnswerClick(event.pageX, event.pageY, question);
@@ -627,12 +631,12 @@ module Game {
                  *         
                  *    Time (max points equal to seconds given for single question (questionTime))
                  *             You get +1 point for every second saved on the clock.
-                */
+                 */
                 var pointsScored: number = 0;
                 var distanceInKm: number = this.convertDistanceToKm(this.calculateDistance(coordinates.x, coordinates.y, question.location.x, question.location.y));
                 if (distanceInKm < this.distanceScoreCutoff)
                     pointsScored += Math.round(this.maxScoreForDistance * (1 - (distanceInKm / this.distanceScoreCutoff)));
-                var timeSaved: number = Math.round(this.timeLeft/1000);
+                var timeSaved: number = Math.round(this.timeLeft / 1000);
                 if (timeSaved > 0)
                     pointsScored += timeSaved;
                 this.addToScore(pointsScored);
@@ -657,15 +661,19 @@ module Game {
                 this.scoreElement.css('opacity', '1');
             }, 300);
             // delay 300ms for fadein animation
-            setTimeout(() => { this.scoreElement.addClass('bump-animate'); }, 300);
-            setTimeout(() => { this.scoreElement.removeClass('bump-animate'); }, 600);
+            setTimeout(() => {
+                this.scoreElement.addClass('bump-animate');
+            }, 300);
+            setTimeout(() => {
+                this.scoreElement.removeClass('bump-animate');
+            }, 600);
         }
 
         private clearScore(): void {
             this.totalPoints = 0;
             this.scoreElement.text(0);
         }
-        
+
         private drawLineBetweenPoints(x1: number, y1: number, x2: number, y2: number): void {
             this.map.line(x1, y1, x2, y2, {
                 color: '#9e9e9e',
@@ -673,11 +681,11 @@ module Game {
                 style: 'dotted'
             });
         }
-        
+
         private removeDistanceLine(): void {
             $('.line').remove();
         }
-        
+
         private setMarker(marker: JQuery, x: number, y: number): void {
             marker
                 .css({
@@ -698,7 +706,11 @@ module Game {
                     left: x,
                     top: y
                 })
-                .animate({ opacity: 1 }, { duration: 200 })
+                .animate({
+                    opacity: 1
+                }, {
+                    duration: 200
+                })
                 .appendTo(this.map)
                 .show();
         }
@@ -708,7 +720,7 @@ module Game {
             this.markerCorrect.hide();
             this.map.find('.shadow').remove();
         }
-        
+
         private setQuestionText(text: string): void {
             var length: number = text.length;
             var fontSize: number;
@@ -721,21 +733,21 @@ module Game {
             } else {
                 fontSize = 20;
             }
-                
-                
+
+
             this.questionTextMain
                 .css('font-size', fontSize)
                 .text(text);
         }
-        
+
         private clearQuestionDetails(): void {
             this.questionTextMain.empty();
             this.questionTextSecondary.empty();
             this.hideMapMarkers();
             this.removeDistanceLine();
         }
-        
-        private begin(level?: number): void {
+
+        private begin(level ? : number): void {
             if (!level) {
                 this.level = 1;
                 this.clearScore();
@@ -752,15 +764,15 @@ module Game {
             this.bindClickForQuestion(this.question);
             this.startTimer();
         }
-        
+
         private setTimerTo(seconds: number): void {
             this.timerText.text(this.roundToTenths(seconds).toFixed(1) + 's');
         }
-        
+
         private roundToTenths(number: number): number {
             return Math.round(10 * number) / 10;
         }
-        
+
         private startTimer(): void {
             this.resetProgressBar();
             var currentWidth = 0;
@@ -786,7 +798,7 @@ module Game {
                 }
             }, this.progressBarUpdateRate);
         }
-        
+
         // remove transitions when progressbar is reset, because we want to start from 0 instantly
         // instead of slow transition backwards.
         // timeout needed because transitions are turned on again too quickly and are still showing.
@@ -798,43 +810,43 @@ module Game {
                 this.progressBar.removeClass('no-transitions');
             }, 100);
         }
-        
+
         private setProgressBarWidth(width: string): void {
             this.progressBar.width(width);
         }
-        
+
         private setProgressBarColor(color: string): void {
             this.progressBar.css('background-color', color);
         }
-        
+
         private stopTimer(): void {
             clearInterval(this.progressInterval);
             this.progressInterval = 0;
             this.setTimerTo(0);
             this.setProgressBarWidth('100%');
         }
-        
+
         private endGame(): void {
             modalManager.openModalGameOver('<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.');
         }
-        
+
         private shuffle(array: IQuestion[]): IQuestion[] {
             let counter = array.length;
-        
+
             // While there are elements in the array
             while (counter > 0) {
                 // Pick a random index
                 let index = Math.floor(Math.random() * counter);
-        
+
                 // Decrease counter by 1
                 counter--;
-        
+
                 // And swap the last element with it
                 let temp = array[counter];
                 array[counter] = array[index];
                 array[index] = temp;
             }
-        
+
             return array;
         }
 
