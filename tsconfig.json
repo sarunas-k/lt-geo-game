@@ -1,0 +1,16 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "types": [],
+        "watch": true
+    },
+    "include": [
+        "scripts/*.ts"
+    ],
+    "exclude": [
+        "scripts/*.d.ts"
+    ]
+}
