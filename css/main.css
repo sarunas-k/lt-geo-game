@@ -1,14 +1,30 @@
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+
+html {
+    height: 100%;
+    min-height: 100%;
+}
+
 body {
-    background-color: rgb(255, 174, 59);
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eda600+0,f7f260+100 */
+    background: rgb(237, 166, 0);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(237, 166, 0, 1) 0%, rgba(247, 242, 96, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(237, 166, 0, 1) 0%, rgba(247, 242, 96, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(237, 166, 0, 1) 0%, rgba(247, 242, 96, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#eda600', endColorstr='#f7f260', GradientType=0);
+    /* IE6-9 */
 }
 
 .map-game-wrapper {
     position: relative;
     overflow: hidden;
-        margin: 0 auto;
+    margin: 0 auto;
     width: 678px;
     margin-top: 100px;
 }
@@ -98,11 +114,16 @@ body {
 
 .map-game-wrapper .map-content .modal .modal-dialog .modal-content {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e2e2e2+1,ffffff+100 */
-    background: rgb(226,226,226); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(226,226,226,1) 1%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(226,226,226,1) 1%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(226,226,226,1) 1%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+    background: rgb(226, 226, 226);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(226, 226, 226, 1) 1%, rgba(255, 255, 255, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(226, 226, 226, 1) 1%, rgba(255, 255, 255, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(226, 226, 226, 1) 1%, rgba(255, 255, 255, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#ffffff', GradientType=0);
+    /* IE6-9 */
     border: 3px solid #23a127;
 }
 
@@ -166,13 +187,18 @@ body {
 
 .map-game-wrapper .map-footer {
     height: 100px;
-    background-color: rgba(222,222,222,1);
+    background-color: rgba(222, 222, 222, 1);
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,dedede+100 */
-    background: rgb(255,255,255); /* Old browsers */
-    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(222,222,222,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(222,222,222,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(222,222,222,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dedede',GradientType=0 ); /* IE6-9 */
+    background: rgb(255, 255, 255);
+    /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(222, 222, 222, 1) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(222, 222, 222, 1) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(222, 222, 222, 1) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dedede', GradientType=0);
+    /* IE6-9 */
     position: relative;
 }
 
@@ -197,8 +223,12 @@ body {
 }
 
 @keyframes bump {
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .bump-animate {
@@ -211,6 +241,7 @@ body {
     height: 100%;
     float: left;
 }
+
 
 /*.map-game-wrapper .question {
     position: absolute;
@@ -241,7 +272,7 @@ body {
 }
 
 .map-game-wrapper .cool-text-shadow {
-    text-shadow: 0 1px 0 rgb(204,204,204), 0 2px 0 rgb(201,201,201), 0 3px 0 rgb(187,187,187), 0 4px 0 rgb(185,185,185), 0 5px 0 rgb(170,170,170), 0 6px 1px rgba(0,0,0,0.0980392), 0 0 5px rgba(0,0,0,0.0980392), 0 1px 3px rgba(0, 0, 0, 0.1), 0 3px 5px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.1), 0 20px 20px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 0 rgb(204, 204, 204), 0 2px 0 rgb(201, 201, 201), 0 3px 0 rgb(187, 187, 187), 0 4px 0 rgb(185, 185, 185), 0 5px 0 rgb(170, 170, 170), 0 6px 1px rgba(0, 0, 0, 0.0980392), 0 0 5px rgba(0, 0, 0, 0.0980392), 0 1px 3px rgba(0, 0, 0, 0.1), 0 3px 5px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.1), 0 20px 20px rgba(0, 0, 0, 0.1);
 }
 
 .fontsize40 {
