@@ -635,7 +635,7 @@ var Game;
         };
         GameController.prototype.drawLineBetweenPoints = function (x1, y1, x2, y2) {
             this.map.line(x1, y1, x2, y2, {
-                color: '#9e9e9e',
+                color: '#3e3e3e',
                 stroke: 2,
                 style: 'dotted'
             });
