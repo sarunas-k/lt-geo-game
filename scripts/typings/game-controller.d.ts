@@ -5,7 +5,8 @@ interface ILocation {
 }
 
 interface IQuestion {
-    text: string,
+    textMain: string,
+    textSecondary?: string,
     location: ILocation
 }
 

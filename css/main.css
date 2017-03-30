@@ -72,8 +72,8 @@ body {
     background-image: url('../img/map4.png');
     box-shadow: inset 0px -5px 5px 0px rgba(0, 0, 0, 0.05);
     -webkit-perspective: 1300px;
-	-moz-perspective: 1300px;
-	perspective: 1300px;
+    -moz-perspective: 1300px;
+    perspective: 1300px;
 }
 
 .map-game-wrapper .map-content .map-backdrop {
@@ -93,24 +93,24 @@ body {
     display: block;
     z-index: -1000;
     -webkit-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-	-webkit-transform: rotateX(-70deg);
-	-moz-transform: rotateX(-70deg);
-	-ms-transform: rotateX(-70deg);
-	transform: rotateX(-70deg);
-	-webkit-transition: all 0.3s;
-	-moz-transition: all 0.3s;
-	transition: all 0.3s;
-	opacity: 0;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform: rotateX(-70deg);
+    -moz-transform: rotateX(-70deg);
+    -ms-transform: rotateX(-70deg);
+    transform: rotateX(-70deg);
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    opacity: 0;
 }
 
 .map-game-wrapper .map-content .modal.modal-visible {
     -webkit-transform: rotateX(0deg);
-	-moz-transform: rotateX(0deg);
-	-ms-transform: rotateX(0deg);
-	transform: rotateX(0deg);
-	opacity: 1;
+    -moz-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    opacity: 1;
     z-index: 1000;
 }
 
@@ -216,7 +216,6 @@ body {
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dedede', GradientType=0);
     /* IE6-9 */
-    position: relative;
 }
 
 .map-game-wrapper .map-footer .game-score {
@@ -254,25 +253,43 @@ body {
 
 .map-game-wrapper .map-footer .question-container {
     text-align: center;
-    width: 340px;
+    width: 320px;
     height: 100%;
     float: left;
 }
 
-
-/*.map-game-wrapper .question {
+.map-game-wrapper .question {
     position: absolute;
+    width: 400px;
     top: 50%;
     left: 50%;
-    transform: translateY(-50%) translateX(-50%);
-    text-align: center;
-    background-color: white;
-    padding: 30px;
-    transition: all 0.5s;
-}*/
+    padding: 30px 0 50px 0;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    transition: all 0s;
+    /* disables transition the other way */
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 1;
+}
+
+.map-game-wrapper .question.show-below {
+    /* IMPORTANT: measurements adjusted to 0.7 scale */
+    width: 457px;
+    top: 520px;
+    left: 140px;
+    padding: 0;
+    background: none;
+    transform: scale(0.7);
+    transition: all 0.4s;
+}
+
+.map-game-wrapper .question.hidden {
+    opacity: 0;
+    z-index: -1000;
+}
 
 .map-game-wrapper .question .question-main-field {
-    font-size: 40px;
+    font-size: 55px;
     font-weight: bold;
     color: #333333;
     margin: 0;
@@ -282,7 +299,7 @@ body {
 }
 
 .map-game-wrapper .question .question-secondary-field {
-    font-size: 25px;
+    font-size: 35px;
     font-weight: normal;
     color: #636363;
     margin: 0;
