@@ -13,3 +13,8 @@ interface ICoordinates {
     x: number,
     y: number
 }
+
+interface IModalData {
+    title: string,
+    content?: string
+}

@@ -144,13 +144,13 @@ body {
     border: 3px solid #23a127;
 }
 
-.map-game-wrapper .map-content .modal-mid-game .question-details,
-.map-game-wrapper .map-content .modal-gameover .game-results {
+.map-game-wrapper .map-content .modal-mid-game .modal-body-inner,
+.map-game-wrapper .map-content .modal-gameover .modal-body-inner {
     border-bottom-width: 1px;
 }
 
-.map-game-wrapper .map-content .modal-mid-game .question-details h3,
-.map-game-wrapper .map-content .modal-gameover .game-results h3 {
+.map-game-wrapper .map-content .modal-mid-game .modal-body-inner h3,
+.map-game-wrapper .map-content .modal-gameover .modal-body-inner h3 {
     color: #fff;
     margin-top: 10px;
     font-weight: bold;

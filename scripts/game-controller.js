@@ -39,7 +39,9 @@ var Game;
             this.addLocations();
             this.addQuestions();
             this.subscribeEvents();
-            modalManager.openModalStart();
+            modalManager.openModal(Game.ModalType.START, {
+                title: 'Labas!'
+            });
         }
         GameController.prototype.subscribeEvents = function () {
             var _this = this;
@@ -610,7 +612,10 @@ var Game;
                         _this.endGame();
                         return;
                     }
-                    modalManager.openModalMidGame('Tikslus atsakymas buvo už <h3>' + distanceInKm + 'km</h3>');
+                    modalManager.openModal(Game.ModalType.MIDGAME, {
+                        title: 'Puiku. Einam prie kito klausimo...',
+                        content: 'Tikslus atsakymas buvo už <h3>' + distanceInKm + 'km</h3>'
+                    });
                 }, _this.delayAfterQuestion);
             }, 700);
         };
@@ -745,7 +750,10 @@ var Game;
                     if (_this.level == _this.gameLevelsCount)
                         _this.endGame();
                     else
-                        modalManager.openModalMidGame('Kita karta paskubekite duoti atsakyma...');
+                        modalManager.openModal(Game.ModalType.MIDGAME, {
+                            title: 'Per letai...',
+                            content: 'Kita karta paskubekite duoti atsakyma.'
+                        });
                 }
             }, this.progressBarUpdateRate);
         };
@@ -771,7 +779,10 @@ var Game;
             this.setProgressBarWidth('100%');
         };
         GameController.prototype.endGame = function () {
-            modalManager.openModalGameOver('<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.');
+            modalManager.openModal(Game.ModalType.END, {
+                title: 'Sveikinam!',
+                content: '<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.'
+            });
         };
         GameController.prototype.shuffle = function (array) {
             var counter = array.length;

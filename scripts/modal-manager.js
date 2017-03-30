@@ -13,67 +13,94 @@ var Game;
             this.gameResults = this.modalGameOver.find('.game-results');
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
         }
-        ModalManager.prototype.openModalStart = function () {
-            this.setStartButtonHandler();
+        ModalManager.prototype.openModal = function (modalType, modalData) {
+            var modal;
+            switch (modalType) {
+                case ModalType.START:
+                    modal = this.modalStart;
+                    break;
+                case ModalType.MIDGAME:
+                    modal = this.modalMidGame;
+                    break;
+                case ModalType.END:
+                    modal = this.modalGameOver;
+                    break;
+                default:
+                    break;
+            }
+            this.bindEventHandlers(modal);
+            this.insertData(modal, modalData);
+            this.setVisibility(modal, true);
             this.addBackdrop();
-            this.modalStart.addClass('modal-visible');
         };
-        ModalManager.prototype.closeModalStart = function () {
+        ModalManager.prototype.closeModal = function (modalType) {
+            var modal;
+            switch (modalType) {
+                case ModalType.START:
+                    modal = this.modalStart;
+                    break;
+                case ModalType.MIDGAME:
+                    modal = this.modalMidGame;
+                    break;
+                case ModalType.END:
+                    modal = this.modalGameOver;
+                    break;
+                default:
+                    break;
+            }
+            this.setVisibility(modal, false);
             this.removeBackdrop();
-            this.modalStart.removeClass('modal-visible');
         };
-        ModalManager.prototype.openModalMidGame = function (content) {
-            this.setNextButtonHandler();
-            this.setQuestionResult(content);
-            this.addBackdrop();
-            this.modalMidGame.addClass('modal-visible');
-        };
-        ModalManager.prototype.closeModalMidGame = function () {
-            this.removeBackdrop();
-            this.modalMidGame.removeClass('modal-visible');
-        };
-        ModalManager.prototype.openModalGameOver = function (content) {
-            this.setPlayAgainButtonHandler();
-            this.setGameResult(content);
-            this.addBackdrop();
-            this.modalGameOver.addClass('modal-visible');
-        };
-        ModalManager.prototype.closeModalGameOver = function () {
-            this.removeBackdrop();
-            this.modalGameOver.removeClass('modal-visible');
-        };
-        ModalManager.prototype.setNextButtonHandler = function () {
+        ModalManager.prototype.bindEventHandlers = function (modal) {
             var _this = this;
-            this.nextButton.one('click', function (event) {
-                _this.closeModalMidGame();
-                eventManager.publish(Game.EventNames.ModalNextLevelClicked);
-                event.preventDefault();
-                return false;
-            });
+            if (modal.is('.modal-start')) {
+                this.startButton.one('click', function (event) {
+                    _this.closeModal(ModalType.START);
+                    eventManager.publish(Game.EventNames.ModalStartGame);
+                    event.preventDefault();
+                    return false;
+                });
+            }
+            else if (modal.is('.modal-mid-game')) {
+                this.nextButton.one('click', function (event) {
+                    _this.closeModal(ModalType.MIDGAME);
+                    eventManager.publish(Game.EventNames.ModalNextLevelClicked);
+                    event.preventDefault();
+                    return false;
+                });
+            }
+            else if (modal.is('.modal-gameover')) {
+                this.playAgainButton.one('click', function (event) {
+                    _this.closeModal(ModalType.END);
+                    eventManager.publish(Game.EventNames.ModalStartGame);
+                    event.preventDefault();
+                    return false;
+                });
+            }
         };
-        ModalManager.prototype.setStartButtonHandler = function () {
-            var _this = this;
-            this.startButton.one('click', function (event) {
-                _this.closeModalStart();
-                eventManager.publish(Game.EventNames.ModalStartGame);
-                event.preventDefault();
-                return false;
-            });
+        ModalManager.prototype.insertData = function (modal, modalData) {
+            if (!modal.length)
+                return;
+            this.setTitle(modal, modalData.title);
+            this.setContent(modal, modalData.content);
         };
-        ModalManager.prototype.setPlayAgainButtonHandler = function () {
-            var _this = this;
-            this.playAgainButton.one('click', function (event) {
-                _this.closeModalGameOver();
-                eventManager.publish(Game.EventNames.ModalStartGame);
-                event.preventDefault();
-                return false;
-            });
+        ModalManager.prototype.setTitle = function (modal, title) {
+            if (!modal.length)
+                return;
+            modal.find('.modal-header .modal-title').html(title);
         };
-        ModalManager.prototype.setQuestionResult = function (html) {
-            this.questionDetails.html(html);
+        ModalManager.prototype.setContent = function (modal, content) {
+            if (!modal.length)
+                return;
+            var target = modal.find('.modal-body .modal-body-inner');
+            if (!content) {
+                target.parent().hide();
+                return;
+            }
+            target.html(content).show();
         };
-        ModalManager.prototype.setGameResult = function (html) {
-            this.gameResults.html(html);
+        ModalManager.prototype.setVisibility = function (target, visible) {
+            visible ? target.addClass('modal-visible') : target.removeClass('modal-visible');
         };
         ModalManager.prototype.addBackdrop = function () {
             this.mapBackDrop.css('opacity', '1');
@@ -84,5 +111,11 @@ var Game;
         return ModalManager;
     }());
     Game.ModalManager = ModalManager;
+    var ModalType;
+    (function (ModalType) {
+        ModalType[ModalType["START"] = 0] = "START";
+        ModalType[ModalType["MIDGAME"] = 1] = "MIDGAME";
+        ModalType[ModalType["END"] = 2] = "END";
+    })(ModalType = Game.ModalType || (Game.ModalType = {}));
 })(Game || (Game = {}));
 var modalManager = new Game.ModalManager();

@@ -56,7 +56,10 @@ module Game {
             this.addLocations();
             this.addQuestions();
             this.subscribeEvents();
-            modalManager.openModalStart();
+            modalManager.openModal(
+                ModalType.START, {
+                    title: 'Labas!'
+                });
             //this.enableDeveloperMode();
         }
 
@@ -647,7 +650,10 @@ module Game {
                         this.endGame();
                         return;
                     }
-                    modalManager.openModalMidGame('Tikslus atsakymas buvo už <h3>' + distanceInKm + 'km</h3>');
+                    modalManager.openModal(ModalType.MIDGAME, {
+                        title: 'Puiku. Einam prie kito klausimo...',
+                        content: 'Tikslus atsakymas buvo už <h3>' + distanceInKm + 'km</h3>'
+                    });
                 }, this.delayAfterQuestion);
             }, 700);
         }
@@ -794,7 +800,10 @@ module Game {
                     if (this.level == this.gameLevelsCount)
                         this.endGame();
                     else
-                        modalManager.openModalMidGame('Kita karta paskubekite duoti atsakyma...');
+                        modalManager.openModal(ModalType.MIDGAME, {
+                            title: 'Per letai...',
+                            content: 'Kita karta paskubekite duoti atsakyma.'
+                        });
                 }
             }, this.progressBarUpdateRate);
         }
@@ -827,7 +836,11 @@ module Game {
         }
 
         private endGame(): void {
-            modalManager.openModalGameOver('<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.');
+            modalManager.openModal(ModalType.END, {
+                title: 'Sveikinam!',
+                content: '<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.'
+            });
+
         }
 
         private shuffle(array: IQuestion[]): IQuestion[] {
