@@ -40,7 +40,7 @@ var Game;
             this.addQuestions();
             this.subscribeEvents();
             modalManager.openModal(Game.ModalType.START, {
-                title: 'Labas!'
+                title: 'Lietuvos pažintinis žaidimas'
             });
         }
         GameController.prototype.subscribeEvents = function () {
@@ -612,9 +612,16 @@ var Game;
                         _this.endGame();
                         return;
                     }
+                    var title;
+                    if (distanceInKm < 15)
+                        title = 'Puiku!';
+                    else if (distanceInKm > 15 && distanceInKm < _this.distanceScoreCutoff)
+                        title = 'Neblogai! Galėtum dar geriau?';
+                    else
+                        title = 'Tu gali ir geriau.';
                     modalManager.openModal(Game.ModalType.MIDGAME, {
-                        title: 'Puiku. Einam prie kito klausimo...',
-                        content: 'Tikslus atsakymas buvo už <h3>' + distanceInKm + 'km</h3>'
+                        title: title,
+                        content: 'Tiksli vieta buvo už <h3>' + distanceInKm + 'km</h3>'
                     });
                 }, _this.delayAfterQuestion);
             }, 700);
@@ -759,8 +766,8 @@ var Game;
                         _this.endGame();
                     else
                         modalManager.openModal(Game.ModalType.MIDGAME, {
-                            title: 'Per letai...',
-                            content: 'Kita karta paskubekite duoti atsakyma.'
+                            title: 'Per lėtai...',
+                            content: 'Kitą kartą paskubėk atsakyti.'
                         });
                 }
             }, this.progressBarUpdateRate);
@@ -789,7 +796,7 @@ var Game;
         GameController.prototype.endGame = function () {
             modalManager.openModal(Game.ModalType.END, {
                 title: 'Sveikinam!',
-                content: '<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.'
+                content: '<h3>Tavo rezultatas ' + this.totalPoints + ' taškai.</h3>'
             });
         };
         GameController.prototype.shuffle = function (array) {

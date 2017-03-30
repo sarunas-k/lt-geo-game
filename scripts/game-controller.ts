@@ -58,7 +58,7 @@ module Game {
             this.subscribeEvents();
             modalManager.openModal(
                 ModalType.START, {
-                    title: 'Labas!'
+                    title: 'Lietuvos pažintinis žaidimas'
                 });
             //this.enableDeveloperMode();
         }
@@ -650,9 +650,18 @@ module Game {
                         this.endGame();
                         return;
                     }
+
+                    var title: string;
+                    if (distanceInKm < 15)
+                        title = 'Puiku!';
+                    else if (distanceInKm > 15 && distanceInKm < this.distanceScoreCutoff)
+                        title = 'Neblogai! Galėtum dar geriau?';
+                    else
+                        title = 'Tu gali ir geriau.';
+
                     modalManager.openModal(ModalType.MIDGAME, {
-                        title: 'Puiku. Einam prie kito klausimo...',
-                        content: 'Tikslus atsakymas buvo už <h3>' + distanceInKm + 'km</h3>'
+                        title: title,
+                        content: 'Tiksli vieta buvo už <h3>' + distanceInKm + 'km</h3>'
                     });
                 }, this.delayAfterQuestion);
             }, 700);
@@ -809,8 +818,8 @@ module Game {
                         this.endGame();
                     else
                         modalManager.openModal(ModalType.MIDGAME, {
-                            title: 'Per letai...',
-                            content: 'Kita karta paskubekite duoti atsakyma.'
+                            title: 'Per lėtai...',
+                            content: 'Kitą kartą paskubėk atsakyti.'
                         });
                 }
             }, this.progressBarUpdateRate);
@@ -846,7 +855,7 @@ module Game {
         private endGame(): void {
             modalManager.openModal(ModalType.END, {
                 title: 'Sveikinam!',
-                content: '<h3>Sveikinam, jūsų rezultatas ' + this.totalPoints + ' taškai.'
+                content: '<h3>Tavo rezultatas ' + this.totalPoints + ' taškai.</h3>'
             });
 
         }
