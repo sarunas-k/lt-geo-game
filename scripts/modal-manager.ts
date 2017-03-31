@@ -1,11 +1,12 @@
 /// <reference path="../node_modules/@types/jquery/index.d.ts" />
+/// <reference path="../node_modules/@types/facebook-js-sdk/index.d.ts" />
 /// <reference path="typings/event-manager.d.ts" />
 /// <reference path="event-names.ts" />
 
 module Game {
 
     export class ModalManager {
-        
+
         private container: JQuery;
         private mapBackDrop: JQuery;
         private modalStart: JQuery;
@@ -16,6 +17,7 @@ module Game {
         private modalGameOver: JQuery;
         private gameResults: JQuery;
         private playAgainButton: JQuery;
+        private shareButton: JQuery;
 
         constructor() {
             this.container = $('.map-game-wrapper .map-content');
@@ -31,6 +33,8 @@ module Game {
             this.modalGameOver = this.container.find('.modal-gameover');
             this.gameResults = this.modalGameOver.find('.game-results');
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
+            this.shareButton = this.modalGameOver.find('.share-button');
+            this.initShareButton();
         }
 
         public openModal(modalType: ModalType, modalData: IModalData): void {
@@ -48,7 +52,7 @@ module Game {
                 default:
                     break;
             }
-            
+
             this.bindEventHandlers(modal);
             this.insertData(modal, modalData);
             this.setVisibility(modal, true);
@@ -72,6 +76,28 @@ module Game {
             }
             this.setVisibility(modal, false);
             this.removeBackdrop();
+        }
+
+        private initShareButton(): void {
+            $.ajaxSetup({
+                cache: true
+            });
+            $.getScript("http://connect.facebook.net/lt_LT/sdk.js", () => {
+                FB.init({
+                    appId: '127428917793107',
+                    version: 'v2.7',
+                    status: true,
+                    cookie: true,
+                    xfbml: true
+                });
+            });
+
+            this.shareButton.on('click', (event: JQueryEventObject) => {
+                FB.ui({
+                    method: 'share',
+                    href: 'https://developers.facebook.com/docs/',
+                }, function (response) {});
+            });
         }
 
         private bindEventHandlers(modal: JQuery): void {
@@ -122,7 +148,7 @@ module Game {
                 target.parent().hide();
                 return;
             }
-                
+
             target.html(content).show();
         }
 
@@ -147,6 +173,4 @@ module Game {
     }
 
 }
-
 var modalManager: Game.ModalManager = new Game.ModalManager();
-

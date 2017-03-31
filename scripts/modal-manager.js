@@ -12,6 +12,8 @@ var Game;
             this.modalGameOver = this.container.find('.modal-gameover');
             this.gameResults = this.modalGameOver.find('.game-results');
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
+            this.shareButton = this.modalGameOver.find('.share-button');
+            this.initShareButton();
         }
         ModalManager.prototype.openModal = function (modalType, modalData) {
             var modal;
@@ -50,6 +52,26 @@ var Game;
             }
             this.setVisibility(modal, false);
             this.removeBackdrop();
+        };
+        ModalManager.prototype.initShareButton = function () {
+            $.ajaxSetup({
+                cache: true
+            });
+            $.getScript("http://connect.facebook.net/lt_LT/sdk.js", function () {
+                FB.init({
+                    appId: '127428917793107',
+                    version: 'v2.7',
+                    status: true,
+                    cookie: true,
+                    xfbml: true
+                });
+            });
+            this.shareButton.on('click', function (event) {
+                FB.ui({
+                    method: 'share',
+                    href: 'https://developers.facebook.com/docs/'
+                }, function (response) { });
+            });
         };
         ModalManager.prototype.bindEventHandlers = function (modal) {
             var _this = this;

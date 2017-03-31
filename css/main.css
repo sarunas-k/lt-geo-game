@@ -123,6 +123,16 @@ body {
     top: 20%;
 }
 
+.map-game-wrapper .map-content .modal.modal-gameover .play-again-button,
+.map-game-wrapper .map-content .modal.modal-gameover .share-button {
+    float: left;
+    width: 172px;
+}
+
+.map-game-wrapper .map-content .modal.modal-gameover .share-button {
+    margin: 0 0 0 10px;
+}
+
 .map-game-wrapper .map-content .modal .modal-dialog {
     margin: 30px auto;
     text-align: center;
