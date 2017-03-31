@@ -95,7 +95,7 @@ module Game {
             this.shareButton.on('click', (event: JQueryEventObject) => {
                 FB.ui({
                     method: 'share',
-                    href: '//developers.facebook.com/docs/',
+                    href: 'https://sarunas-k.github.io/lt-geo-game/',
                 }, function (response) {});
             });
         }
