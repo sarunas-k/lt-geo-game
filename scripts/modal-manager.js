@@ -57,7 +57,7 @@ var Game;
             $.ajaxSetup({
                 cache: true
             });
-            $.getScript("http://connect.facebook.net/lt_LT/sdk.js", function () {
+            $.getScript("//connect.facebook.net/lt_LT/sdk.js", function () {
                 FB.init({
                     appId: '127428917793107',
                     version: 'v2.7',
@@ -69,7 +69,7 @@ var Game;
             this.shareButton.on('click', function (event) {
                 FB.ui({
                     method: 'share',
-                    href: 'https://developers.facebook.com/docs/'
+                    href: '//developers.facebook.com/docs/'
                 }, function (response) { });
             });
         };

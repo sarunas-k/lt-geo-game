@@ -82,7 +82,7 @@ module Game {
             $.ajaxSetup({
                 cache: true
             });
-            $.getScript("http://connect.facebook.net/lt_LT/sdk.js", () => {
+            $.getScript("//connect.facebook.net/lt_LT/sdk.js", () => {
                 FB.init({
                     appId: '127428917793107',
                     version: 'v2.7',
@@ -95,7 +95,7 @@ module Game {
             this.shareButton.on('click', (event: JQueryEventObject) => {
                 FB.ui({
                     method: 'share',
-                    href: 'https://developers.facebook.com/docs/',
+                    href: '//developers.facebook.com/docs/',
                 }, function (response) {});
             });
         }
