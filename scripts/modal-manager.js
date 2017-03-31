@@ -69,7 +69,7 @@ var Game;
             this.shareButton.on('click', function (event) {
                 FB.ui({
                     method: 'share',
-                    href: 'https://sarunas-k.github.io/lt-geo-game/'
+                    href: 'https://www.ltgame.lt'
                 }, function (response) { });
             });
         };
