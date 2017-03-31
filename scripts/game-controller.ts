@@ -855,9 +855,30 @@ module Game {
         private endGame(): void {
             modalManager.openModal(ModalType.END, {
                 title: 'Sveikinam!',
-                content: '<h3>Tavo rezultatas ' + this.totalPoints + ' taškai.</h3>'
+                content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctEnding() + '.</h3>'
             });
+        }
 
+        private correctEnding(number = this.totalPoints): string {
+            var ending: string = '';
+            var pointsString: string = number.toString();
+            var length: number = pointsString.length;
+            var lastDigit: string = pointsString[length-1];
+            var lastTwoString: string;
+            var lastTwoNumber: number;
+            if (length > 1) {
+                lastTwoString = pointsString.slice(length-2);
+                lastTwoNumber = Number(lastTwoString);
+            }
+
+            if ((length == 1 && lastDigit == '1') || (length > 1 && lastDigit == '1' && lastTwoString != '11'))
+                ending = 'as';
+            else if (lastDigit == '0' || (length > 1 && (lastTwoNumber > 10 && lastTwoNumber < 20)))
+                ending = 'ų';
+            else
+                ending = 'ai';
+
+            return ending;
         }
 
         private shuffle(array: IQuestion[]): IQuestion[] {

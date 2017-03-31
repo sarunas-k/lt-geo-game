@@ -796,8 +796,28 @@ var Game;
         GameController.prototype.endGame = function () {
             modalManager.openModal(Game.ModalType.END, {
                 title: 'Sveikinam!',
-                content: '<h3>Tavo rezultatas ' + this.totalPoints + ' taškai.</h3>'
+                content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctEnding() + '.</h3>'
             });
+        };
+        GameController.prototype.correctEnding = function (number) {
+            if (number === void 0) { number = this.totalPoints; }
+            var ending = '';
+            var pointsString = number.toString();
+            var length = pointsString.length;
+            var lastDigit = pointsString[length - 1];
+            var lastTwoString;
+            var lastTwoNumber;
+            if (length > 1) {
+                lastTwoString = pointsString.slice(length - 2);
+                lastTwoNumber = Number(lastTwoString);
+            }
+            if ((length == 1 && lastDigit == '1') || (length > 1 && lastDigit == '1' && lastTwoString != '11'))
+                ending = 'as';
+            else if (lastDigit == '0' || (length > 1 && (lastTwoNumber > 10 && lastTwoNumber < 20)))
+                ending = 'ų';
+            else
+                ending = 'ai';
+            return ending;
         };
         GameController.prototype.shuffle = function (array) {
             var counter = array.length;

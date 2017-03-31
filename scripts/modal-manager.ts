@@ -18,6 +18,7 @@ module Game {
         private gameResults: JQuery;
         private playAgainButton: JQuery;
         private shareButton: JQuery;
+        private shareUrl: string;
 
         constructor() {
             this.container = $('.map-game-wrapper .map-content');
@@ -34,7 +35,8 @@ module Game {
             this.gameResults = this.modalGameOver.find('.game-results');
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
             this.shareButton = this.modalGameOver.find('.share-button');
-            this.initShareButton();
+            this.shareUrl = 'https://www.ltgame.lt';
+            this.initFBSharing();
         }
 
         public openModal(modalType: ModalType, modalData: IModalData): void {
@@ -52,11 +54,15 @@ module Game {
                 default:
                     break;
             }
-
-            this.bindEventHandlers(modal);
-            this.insertData(modal, modalData);
+            this.initModal(modal, modalData);
             this.setVisibility(modal, true);
             this.addBackdrop();
+        }
+
+        private initModal(modal: JQuery, modalData: IModalData): void {
+            this.insertData(modal, modalData);
+            this.bindEventHandlers(modal);
+            
         }
 
         public closeModal(modalType: ModalType): void {
@@ -78,7 +84,7 @@ module Game {
             this.removeBackdrop();
         }
 
-        private initShareButton(): void {
+        private initFBSharing(): void {
             $.ajaxSetup({
                 cache: true
             });
@@ -90,13 +96,6 @@ module Game {
                     cookie: true,
                     xfbml: true
                 });
-            });
-
-            this.shareButton.on('click', (event: JQueryEventObject) => {
-                FB.ui({
-                    method: 'share',
-                    href: 'https://www.ltgame.lt',
-                }, function (response) {});
             });
         }
 
@@ -121,6 +120,15 @@ module Game {
                     eventManager.publish(EventNames.ModalStartGame);
                     event.preventDefault();
                     return false;
+                });
+
+                this.shareButton.on('click', (event: JQueryEventObject) => {
+                    var title: string = modal.find('.modal-body .modal-body-inner').text();
+                    FB.ui({
+                        method: 'share',
+                        href: this.shareUrl,
+                        title: title.length ? title : 'LT Geo Game'
+                    }, function (response: any) {});
                 });
             }
         }
