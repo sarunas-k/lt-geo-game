@@ -36,6 +36,7 @@ var Game;
                 green: '#5cb85c',
                 yellow: '#ffae22'
             };
+            this.addDistricts();
             this.addLocations();
             this.addQuestions();
             this.subscribeEvents();
@@ -52,521 +53,669 @@ var Game;
                 _this.begin(++_this.level);
             });
         };
+        GameController.prototype.addDistricts = function () {
+            this.districts = [{
+                    name: 'Alytaus apskritis'
+                },
+                {
+                    name: 'Kauno apskritis'
+                },
+                {
+                    name: 'Klaipėdos apskritis'
+                },
+                {
+                    name: 'Marijampolės apskritis'
+                },
+                {
+                    name: 'Panevėžio apskritis'
+                },
+                {
+                    name: 'Šiaulių apskritis'
+                },
+                {
+                    name: 'Tauragės apskritis'
+                },
+                {
+                    name: 'Telšių apskritis'
+                },
+                {
+                    name: 'Utenos apskritis'
+                },
+                {
+                    name: 'Vilniaus apskritis'
+                }
+            ];
+        };
         GameController.prototype.addLocations = function () {
             this.locations = [{
                     name: 'Vilnius',
+                    district: this.districts[9],
                     x: 503,
                     y: 342
                 },
                 {
                     name: 'Kaunas',
+                    district: this.districts[1],
                     x: 352,
                     y: 302
                 },
                 {
                     name: 'Klaipėda',
+                    district: this.districts[2],
                     x: 50,
                     y: 148
                 },
                 {
                     name: 'Šiauliai',
+                    district: this.districts[5],
                     x: 288,
                     y: 104
                 },
                 {
                     name: 'Panevėžys',
+                    district: this.districts[4],
                     x: 402,
                     y: 142
                 },
                 {
                     name: 'Alytus',
+                    district: this.districts[0],
                     x: 368,
                     y: 398
                 },
                 {
                     name: 'Marijampolė',
+                    district: this.districts[3],
                     x: 293,
                     y: 368
                 },
                 {
                     name: 'Mažeikiai',
+                    district: this.districts[7],
                     x: 182,
                     y: 30
                 },
                 {
                     name: 'Jonava',
+                    district: this.districts[1],
                     x: 394,
                     y: 270
                 },
                 {
                     name: 'Utena',
+                    district: this.districts[8],
                     x: 539,
                     y: 187
                 },
                 {
                     name: 'Kėdainiai',
+                    district: this.districts[1],
                     x: 359,
                     y: 228
                 },
                 {
                     name: 'Telšiai',
+                    district: this.districts[7],
                     x: 172,
                     y: 93
                 },
                 {
                     name: 'Visaginas',
+                    district: this.districts[8],
                     x: 629,
                     y: 168
                 },
                 {
                     name: 'Tauragė',
+                    district: this.districts[6],
                     x: 176,
                     y: 236
                 },
                 {
                     name: 'Ukmergė',
+                    district: this.districts[9],
                     x: 448,
                     y: 236
                 },
                 {
                     name: 'Plungė',
+                    district: this.districts[7],
                     x: 127,
                     y: 108
                 },
                 {
                     name: 'Kretinga',
+                    district: this.districts[2],
                     x: 60,
                     y: 113
                 },
                 {
                     name: 'Šilutė',
+                    district: this.districts[2],
                     x: 86,
                     y: 216
                 },
                 {
                     name: 'Radviliškis',
+                    district: this.districts[5],
                     x: 313,
                     y: 128
                 },
                 {
                     name: 'Palanga',
+                    district: this.districts[2],
                     x: 42,
                     y: 106
                 },
                 {
                     name: 'Gargždai',
+                    district: this.districts[2],
                     x: 76,
                     y: 148
                 },
                 {
                     name: 'Druskininkai',
+                    district: this.districts[0],
                     x: 362,
                     y: 471
                 },
                 {
                     name: 'Rokiškis',
+                    district: this.districts[4],
                     x: 537,
                     y: 99
                 },
                 {
                     name: 'Biržai',
+                    district: this.districts[4],
                     x: 446,
                     y: 50
                 },
                 {
                     name: 'Elektrėnai',
+                    district: this.districts[9],
                     x: 436,
                     y: 324
                 },
                 {
                     name: 'Garliava',
+                    district: this.districts[1],
                     x: 349,
                     y: 316
                 },
                 {
                     name: 'Kuršėnai',
+                    district: this.districts[5],
                     x: 247,
                     y: 90
                 },
                 {
                     name: 'Jurbarkas',
+                    district: this.districts[6],
                     x: 226,
                     y: 268
                 },
                 {
                     name: 'Vilkaviškis',
+                    district: this.districts[3],
                     x: 258,
                     y: 350
                 },
                 {
                     name: 'Raseiniai',
+                    district: this.districts[1],
                     x: 266,
                     y: 210
                 },
                 {
                     name: 'Anykščiai',
+                    district: this.districts[8],
                     x: 485,
                     y: 182
                 },
                 {
                     name: 'Lentvaris',
+                    district: this.districts[9],
                     x: 477,
                     y: 350
                 },
                 {
                     name: 'Grigiškės',
+                    district: this.districts[9],
                     x: 484,
                     y: 344
                 },
                 {
                     name: 'Naujoji Akmenė',
+                    district: this.districts[5],
                     x: 243,
                     y: 28
                 },
                 {
                     name: 'Prienai',
+                    district: this.districts[1],
                     x: 358,
                     y: 352
                 },
                 {
                     name: 'Joniškis',
+                    district: this.districts[5],
                     x: 321,
                     y: 44
                 },
                 {
                     name: 'Kelmė',
+                    district: this.districts[5],
                     x: 247,
                     y: 162
                 },
                 {
                     name: 'Varėna',
+                    district: this.districts[0],
                     x: 427,
                     y: 430
                 },
                 {
                     name: 'Kaišiadorys',
+                    district: this.districts[1],
                     x: 410,
                     y: 310
                 },
                 {
                     name: 'Pasvalys',
+                    district: this.districts[4],
                     x: 406,
                     y: 78
                 },
                 {
                     name: 'Kupiškis',
+                    district: this.districts[4],
                     x: 470,
                     y: 122
                 },
                 {
                     name: 'Zarasai',
+                    district: this.districts[8],
                     x: 609,
                     y: 143
                 },
                 {
                     name: 'Skuodas',
+                    district: this.districts[2],
                     x: 92,
                     y: 38
                 },
                 {
                     name: 'Molėtai',
+                    district: this.districts[8],
                     x: 518,
                     y: 240
                 },
                 {
                     name: 'Kazlų rūda',
+                    district: this.districts[3],
                     x: 308,
                     y: 331
                 },
                 {
                     name: 'Širvintos',
+                    district: this.districts[9],
                     x: 468,
                     y: 274
                 },
                 {
                     name: 'Šalčininkai',
+                    district: this.districts[9],
                     x: 515,
                     y: 414
                 },
                 {
                     name: 'Šakiai',
+                    district: this.districts[3],
                     x: 259,
                     y: 293
                 },
                 {
                     name: 'Pabradė',
+                    district: this.districts[9],
                     x: 556,
                     y: 287
                 },
                 {
                     name: 'Švenčionėliai',
+                    district: this.districts[9],
                     x: 582,
                     y: 252
                 },
                 {
                     name: 'Šilalė',
+                    district: this.districts[6],
                     x: 164,
                     y: 189
                 },
                 {
                     name: 'Ignalina',
+                    district: this.districts[8],
                     x: 600,
                     y: 219
                 },
                 {
                     name: 'Nemenčinė',
+                    district: this.districts[9],
                     x: 524,
                     y: 313
                 },
                 {
                     name: 'Kybartai',
+                    district: this.districts[3],
                     x: 228,
                     y: 352
                 },
                 {
                     name: 'Švenčionys',
+                    district: this.districts[9],
                     x: 600,
                     y: 257
                 },
                 {
+                    name: 'Pakruojis',
+                    district: this.districts[5],
+                    x: 340,
+                    y: 94
+                },
+                {
                     name: 'Trakai',
+                    district: this.districts[9],
                     x: 466,
                     y: 352
                 }
             ];
         };
         GameController.prototype.addQuestions = function () {
-            this.questions = [{
-                    textMain: 'Vilnius',
+            this.questionListCities = [{
+                    text: 'Vilnius',
                     location: this.locations[0]
                 },
                 {
-                    textMain: 'Kaunas',
+                    text: 'Kaunas',
                     location: this.locations[1]
                 },
                 {
-                    textMain: 'Klaipėda',
+                    text: 'Klaipėda',
                     location: this.locations[2]
                 },
                 {
-                    textMain: 'Šiauliai',
+                    text: 'Šiauliai',
                     location: this.locations[3]
                 },
                 {
-                    textMain: 'Panevėžys',
+                    text: 'Panevėžys',
                     location: this.locations[4]
                 },
                 {
-                    textMain: 'Alytus',
+                    text: 'Alytus',
                     location: this.locations[5]
                 },
                 {
-                    textMain: 'Marijampolė',
+                    text: 'Marijampolė',
                     location: this.locations[6]
                 },
                 {
-                    textMain: 'Mažeikiai',
+                    text: 'Mažeikiai',
                     location: this.locations[7]
                 },
                 {
-                    textMain: 'Jonava',
+                    text: 'Jonava',
                     location: this.locations[8]
                 },
                 {
-                    textMain: 'Utena',
+                    text: 'Utena',
                     location: this.locations[9]
                 },
                 {
-                    textMain: 'Kėdainiai',
+                    text: 'Kėdainiai',
                     location: this.locations[10]
                 },
                 {
-                    textMain: 'Telšiai',
+                    text: 'Telšiai',
                     location: this.locations[11]
                 },
                 {
-                    textMain: 'Visaginas',
+                    text: 'Visaginas',
                     location: this.locations[12]
                 },
                 {
-                    textMain: 'Tauragė',
+                    text: 'Tauragė',
                     location: this.locations[13]
                 },
                 {
-                    textMain: 'Ukmergė',
+                    text: 'Ukmergė',
                     location: this.locations[14]
                 },
                 {
-                    textMain: 'Plungė',
+                    text: 'Plungė',
                     location: this.locations[15]
                 },
                 {
-                    textMain: 'Kretinga',
+                    text: 'Kretinga',
                     location: this.locations[16]
                 },
                 {
-                    textMain: 'Šilutė',
+                    text: 'Šilutė',
                     location: this.locations[17]
                 },
                 {
-                    textMain: 'Radviliškis',
+                    text: 'Radviliškis',
                     location: this.locations[18]
                 },
                 {
-                    textMain: 'Palanga',
+                    text: 'Palanga',
                     location: this.locations[19]
                 },
                 {
-                    textMain: 'Gargždai',
+                    text: 'Gargždai',
                     location: this.locations[20]
                 },
                 {
-                    textMain: 'Druskininkai',
+                    text: 'Druskininkai',
                     location: this.locations[21]
                 },
                 {
-                    textMain: 'Rokiškis',
+                    text: 'Rokiškis',
                     location: this.locations[22]
                 },
                 {
-                    textMain: 'Biržai',
+                    text: 'Biržai',
                     location: this.locations[23]
                 },
                 {
-                    textMain: 'Elektrėnai',
+                    text: 'Elektrėnai',
                     location: this.locations[24]
                 },
                 {
-                    textMain: 'Garliava',
+                    text: 'Garliava',
                     location: this.locations[25]
                 },
                 {
-                    textMain: 'Kuršėnai',
+                    text: 'Kuršėnai',
                     location: this.locations[26]
                 },
                 {
-                    textMain: 'Jurbarkas',
+                    text: 'Jurbarkas',
                     location: this.locations[27]
                 },
                 {
-                    textMain: 'Vilkaviškis',
+                    text: 'Vilkaviškis',
                     location: this.locations[28]
                 },
                 {
-                    textMain: 'Raseiniai',
+                    text: 'Raseiniai',
                     location: this.locations[29]
                 },
                 {
-                    textMain: 'Anykščiai',
+                    text: 'Anykščiai',
                     location: this.locations[30]
                 },
                 {
-                    textMain: 'Lentvaris',
+                    text: 'Lentvaris',
                     location: this.locations[31]
                 },
                 {
-                    textMain: 'Grigiškės',
+                    text: 'Grigiškės',
                     location: this.locations[32]
                 },
                 {
-                    textMain: 'Naujoji Akmenė',
+                    text: 'Naujoji Akmenė',
                     location: this.locations[33]
                 },
                 {
-                    textMain: 'Prienai',
+                    text: 'Prienai',
                     location: this.locations[34]
                 },
                 {
-                    textMain: 'Joniškis',
+                    text: 'Joniškis',
                     location: this.locations[35]
                 },
                 {
-                    textMain: 'Kelmė',
+                    text: 'Kelmė',
                     location: this.locations[36]
                 },
                 {
-                    textMain: 'Varėna',
+                    text: 'Varėna',
                     location: this.locations[37]
                 },
                 {
-                    textMain: 'Kaišiadorys',
+                    text: 'Kaišiadorys',
                     location: this.locations[38]
                 },
                 {
-                    textMain: 'Pasvalys',
+                    text: 'Pasvalys',
                     location: this.locations[39]
                 },
                 {
-                    textMain: 'Kupiškis',
+                    text: 'Kupiškis',
                     location: this.locations[40]
                 },
                 {
-                    textMain: 'Zarasai',
+                    text: 'Zarasai',
                     location: this.locations[41]
                 },
                 {
-                    textMain: 'Skuodas',
+                    text: 'Skuodas',
                     location: this.locations[42]
                 },
                 {
-                    textMain: 'Molėtai',
+                    text: 'Molėtai',
                     location: this.locations[43]
                 },
                 {
-                    textMain: 'Kazlų rūda',
+                    text: 'Kazlų rūda',
                     location: this.locations[44]
                 },
                 {
-                    textMain: 'Širvintos',
+                    text: 'Širvintos',
                     location: this.locations[45]
                 },
                 {
-                    textMain: 'Šalčininkai',
+                    text: 'Šalčininkai',
                     location: this.locations[46]
                 },
                 {
-                    textMain: 'Šakiai',
+                    text: 'Šakiai',
                     location: this.locations[47]
                 },
                 {
-                    textMain: 'Pabradė',
+                    text: 'Pabradė',
                     location: this.locations[48]
                 },
                 {
-                    textMain: 'Švenčionėliai',
+                    text: 'Švenčionėliai',
                     location: this.locations[49]
                 },
                 {
-                    textMain: 'Šilalė',
+                    text: 'Šilalė',
                     location: this.locations[50]
                 },
                 {
-                    textMain: 'Ignalina',
+                    text: 'Ignalina',
                     location: this.locations[51]
                 },
                 {
-                    textMain: 'Nemenčinė',
+                    text: 'Nemenčinė',
                     location: this.locations[52]
                 },
                 {
-                    textMain: 'Kybartai',
+                    text: 'Kybartai',
                     location: this.locations[53]
                 },
                 {
-                    textMain: 'Švenčionys',
+                    text: 'Švenčionys',
                     location: this.locations[54]
                 },
                 {
-                    textMain: 'Trakai',
+                    text: 'Trakai',
                     location: this.locations[55]
                 }
             ];
+            this.questionListFamousPlaces = [{
+                    text: '',
+                    location: this.locations[0]
+                }];
         };
         GameController.prototype.enableDeveloperMode = function () {
             var _this = this;
             this.map.on('click', function (event) {
                 _this.clickCoordinates = _this.getCoordinatesRelativeToImage(event.pageX, event.pageY);
                 _this.coordinatesText.text('X=' + _this.clickCoordinates.x + ' Y=' + _this.clickCoordinates.y);
+            });
+            var editor = $('.editor').show();
+            var menuTabs = editor.find('.menu-tab');
+            var tabLocations = editor.find('.locations-editor');
+            var tabQuestions = editor.find('.questions-editor');
+            var menuItems = editor.find('.nav li');
+            menuItems.on('click', function (event) {
+                var element = $(event.currentTarget);
+                var isActive = element.is('.active');
+                if (isActive)
+                    return;
+                menuTabs.hide();
+                if (element.is('.item-locations')) {
+                    tabLocations.show();
+                }
+                else if (element.is('.item-questions')) {
+                    tabQuestions.show();
+                }
+                menuItems.each(function (i, e) {
+                    var element = $(e);
+                    if (element.is('.active'))
+                        element.removeClass('active');
+                });
+                element.addClass('active');
+            });
+            tabLocations.show();
+            var formLocation = tabLocations.find('form');
+            var selectDistrict = formLocation.find('select');
+            var inputName = formLocation.find('.name');
+            var inputX = formLocation.find('.coordx');
+            var inputY = formLocation.find('.coordy');
+            var outputLocation = tabLocations.find('.output');
+            $.each(this.districts, function (index, district) {
+                selectDistrict.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + district.name + '</option>');
+            });
+            formLocation.submit(function (event) {
+                event.preventDefault();
+                outputLocation.html('{ name: \'' + inputName.val() + '\', district: this.districts[' + selectDistrict.val() + '], x: ' + inputX.val() + ', y: ' + inputY.val() + ' }');
+            });
+            var formQuestion = tabQuestions.find('form');
+            var selectLocations = formQuestion.find('select');
+            var inputQuestion = formQuestion.find('.question-text');
+            var outputQuestion = tabQuestions.find('.output');
+            $.each(this.locations, function (index, location) {
+                selectLocations.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + location.name + '</option>');
+            });
+            formQuestion.submit(function (event) {
+                event.preventDefault();
+                outputQuestion.html('{ text: \'' + inputQuestion.val() + '\', location: this.locations[' + selectLocations.val() + '] }');
             });
         };
         GameController.prototype.calculateDistance = function (x1, y1, x2, y2) {
@@ -688,7 +837,7 @@ var Game;
             this.map.find('.shadow').remove();
         };
         GameController.prototype.setQuestionText = function (question) {
-            var length = question.textMain.length;
+            var length = question.text.length;
             var fontSize;
             if (length <= 16) {
                 fontSize = 50;
@@ -704,9 +853,8 @@ var Game;
             }
             this.questionTextMain
                 .css('font-size', fontSize)
-                .text(question.textMain);
-            if (question.textSecondary)
-                this.questionTextSecondary.text(question.textSecondary);
+                .text(question.text);
+            this.questionTextSecondary.text(question.location.district.name);
         };
         GameController.prototype.clearQuestionDetails = function () {
             this.questionTextMain.empty();
@@ -718,7 +866,7 @@ var Game;
             if (!level) {
                 this.level = 1;
                 this.clearScore();
-                this.questionSet = this.getRandomElements(this.questions, this.gameLevelsCount);
+                this.questionSet = this.getRandomElements(this.questionListCities, this.gameLevelsCount);
                 this.questionInnerContainer.removeClass('hidden');
             }
             this.startQuestionProcedure();

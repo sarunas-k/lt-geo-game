@@ -121,6 +121,36 @@
             </div>
         </div>
     </div>
+    <div class="editor">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="item-locations active"><a href="#">Vietos</a></li>
+            <li role="presentation" class="item-questions"><a href="#">Klausimai iš miestų</a></li>
+        </ul>
+        <div class="menu-tab locations-editor">
+            <form action="">
+                Pavadinimas:<br>
+                <input type="text" name="name" value="" class="name"><br> Apskritis:<br>
+                <select name="districts">
+                  <option value=""></option>
+                </select><br> X:<br>
+                <input type="text" name="x" value="" class="coordx"><br> Y:<br>
+                <input type="text" name="y" value="" class="coordy"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+            <div class="output"></div>
+        </div>
+        <div class="menu-tab questions-editor">
+            <form action="">
+                Klausimas:<br>
+                <input type="text" name="text" value="" class="question-text"><br> Vieta:<br>
+                <select name="locations">
+                  <option value=""></option>
+                </select><br><br>
+                <input type="submit" value="Submit">
+            </form>
+            <div class="output"></div>
+        </div>
+    </div>
 
 
 

@@ -1,12 +1,12 @@
 interface ILocation {
     name: string,
+    district: IDistrict,
     x: number,
     y: number
 }
 
 interface IQuestion {
-    textMain: string,
-    textSecondary?: string,
+    text: string,
     location: ILocation
 }
 
@@ -18,4 +18,8 @@ interface ICoordinates {
 interface IModalData {
     title: string,
     content?: string
+}
+
+interface IDistrict {
+    name: string
 }

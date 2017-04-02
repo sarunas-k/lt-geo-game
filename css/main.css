@@ -338,3 +338,18 @@ body {
 .fontsize15 {
     font-size: 15px;
 }
+
+.editor {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    height: 450px;
+    background-color: #FFFFFF;
+    overflow: scroll;
+    display: none
+}
+.editor .locations-editor,
+.editor .questions-editor {
+    display: none;
+}
