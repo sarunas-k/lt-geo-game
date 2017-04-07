@@ -103,6 +103,9 @@
             <img src="img/push-pin4.png" class="marker-guess" />
             <span class="coords"></span>
             <span class="question-counter"></span>
+            <div class="level-intro hide-intro">
+                <h1 class="cool-text-shadow"></h1>
+            </div>
         </div>
         <div class="map-footer">
             <div class="game-score">
@@ -115,8 +118,8 @@
             <div class="question-container">
                 <!-- Question Presentation Modal -->
                 <div class="question hidden">
-                    <h1 class="question-main-field cool-text-shadow">Šalčininkai</h1>
-                    <h3 class="question-secondary-field cool-text-shadow">Vilniaus rajonas</h3>
+                    <h1 class="question-main-field cool-text-shadow"></h1>
+                    <h3 class="question-secondary-field cool-text-shadow"></h3>
                 </div>
             </div>
         </div>
@@ -124,7 +127,7 @@
     <div class="editor">
         <ul class="nav nav-tabs">
             <li role="presentation" class="item-locations active"><a href="#">Vietos</a></li>
-            <li role="presentation" class="item-questions"><a href="#">Klausimai iš miestų</a></li>
+            <li role="presentation" class="item-questions"><a href="#">Klausimai</a></li>
         </ul>
         <div class="menu-tab locations-editor">
             <form action="">
@@ -149,6 +152,12 @@
                 <input type="submit" value="Submit">
             </form>
             <div class="output"></div>
+        </div>
+        <div class="move-panel">
+            <span class="top-left">↖</span>
+            <span class="top-right">↗</span><br>
+            <span class="bottom-left">↙</span>
+            <span class="bottom-right">↘</span>
         </div>
     </div>
 

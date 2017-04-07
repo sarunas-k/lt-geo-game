@@ -166,6 +166,11 @@ body {
     font-weight: bold;
 }
 
+.map-game-wrapper .map-content .modal-mid-game .modal-body-inner h4,
+.map-game-wrapper .map-content .modal-gameover .modal-body-inner h4 {
+    color: #eee;
+}
+
 .map-game-wrapper .map-content .marker-guess,
 .map-game-wrapper .map-content .marker-answer,
 .map-game-wrapper .map-content .shadow {
@@ -315,6 +320,40 @@ body {
     margin: 0;
 }
 
+.map-game-wrapper .level-intro {
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    left: 50%;
+    padding: 30px 0 50px 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    transition: all 0.7s;
+    /* disables transition the other way */
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 1;
+    z-index: 1000;
+    text-align: center;
+}
+
+.map-game-wrapper .level-intro.hide-intro {
+    opacity: 0;
+    z-index: -1000;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform: rotateX(-70deg) translateX(-50%) translateY(-50%);
+    -moz-transform: rotateX(-70deg) translateX(-50%) translateY(-50%);
+    -ms-transform: rotateX(-70deg) translateX(-50%) translateY(-50%);
+    transform: rotateX(-70deg) translateX(-50%) translateY(-50%);
+}
+
+.map-game-wrapper .level-intro h1 {
+    font-size: 55px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
 .map-game-wrapper .cool-text-shadow {
     text-shadow: 0 1px 0 rgb(204, 204, 204), 0 2px 0 rgb(201, 201, 201), 0 3px 0 rgb(187, 187, 187), 0 4px 0 rgb(185, 185, 185), 0 5px 0 rgb(170, 170, 170), 0 6px 1px rgba(0, 0, 0, 0.0980392), 0 0 5px rgba(0, 0, 0, 0.0980392), 0 1px 3px rgba(0, 0, 0, 0.1), 0 3px 5px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.1), 0 20px 20px rgba(0, 0, 0, 0.1);
 }
@@ -341,8 +380,8 @@ body {
 
 .editor {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 0;
+    left: 0;
     width: 300px;
     height: 450px;
     background-color: #FFFFFF;
@@ -352,4 +391,11 @@ body {
 .editor .locations-editor,
 .editor .questions-editor {
     display: none;
+}
+
+.editor .move-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
 }
