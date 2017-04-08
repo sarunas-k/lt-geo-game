@@ -1062,7 +1062,7 @@ module Game {
                     modalManager.openModal(ModalType.END, {
                         title: 'Puikios pastangos, bet į kitą lygį neperėjai.',
                         content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) +
-                            '.</h3><h4>Surink ' + this.pointsToAdvance + ' tašk' + this.correctLTEnding(this.pointsToAdvance) + ', kad pereitum į kitą lygį.</h4>'
+                            '.</h3><h4>Surink ' + this.pointsToAdvance + ', kad pereitum į kitą lygį.</h4>'
                     });
                     this.resetLevels();
                 }
@@ -1173,6 +1173,7 @@ module Game {
         }
 
         private begin(): void {
+            this.clearQuestionDetails();
             if (this.currentLevel == 1 && this.currentQuestionNumber == 1) {
                 this.currentQuestionsList = this.getRandomElements(this.questionCitiesList, this.questionsPerLevel);
                 this.clearScore();
@@ -1188,6 +1189,7 @@ module Game {
         }
 
         private startQuestionWithIntro(text: string): void {
+            this.updateQuestionCounter();
             this.levelIntroText.text(text);
             this.levelIntro.removeClass('hide-intro');
             setTimeout(() => {
@@ -1199,7 +1201,6 @@ module Game {
         }
 
         private startQuestion(): void {
-            this.clearQuestionDetails();
             this.currentQuestion = this.currentQuestionsList[this.currentQuestionNumber - 1];
             this.setQuestionText(this.currentQuestion);
             this.questionInnerContainer.removeClass('show-below');
