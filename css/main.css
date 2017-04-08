@@ -99,9 +99,9 @@ body {
     -moz-transform: rotateX(-70deg);
     -ms-transform: rotateX(-70deg);
     transform: rotateX(-70deg);
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    transition: all 0.3s;
+    -webkit-transition: all 0.6s;
+    -moz-transition: all 0.6s;
+    transition: all 0.6s;
     opacity: 0;
 }
 
@@ -154,20 +154,23 @@ body {
     border: 3px solid #23a127;
 }
 
-.map-game-wrapper .map-content .modal-mid-game .modal-body-inner,
-.map-game-wrapper .map-content .modal-gameover .modal-body-inner {
-    border-bottom-width: 1px;
+.map-game-wrapper .map-content .modal .modal-dialog .modal-content .modal-header .modal-title {
+    font-size: 24px;
+    color: #444444;
 }
 
-.map-game-wrapper .map-content .modal-mid-game .modal-body-inner h3,
-.map-game-wrapper .map-content .modal-gameover .modal-body-inner h3 {
+.map-game-wrapper .map-content .modal-body-inner {
+    border-bottom-width: 1px;
+    font-size: 15px;
+}
+
+.map-game-wrapper .map-content .modal-body-inner h3 {
     color: #fff;
     margin-top: 10px;
     font-weight: bold;
 }
 
-.map-game-wrapper .map-content .modal-mid-game .modal-body-inner h4,
-.map-game-wrapper .map-content .modal-gameover .modal-body-inner h4 {
+.map-game-wrapper .map-content .modal-body-inner h4 {
     color: #eee;
 }
 
@@ -295,7 +298,7 @@ body {
     padding: 0;
     background: none;
     transform: scale(0.7);
-    transition: all 0.4s;
+    transition: all 0.5s;
 }
 
 .map-game-wrapper .question.hidden {
@@ -326,7 +329,7 @@ body {
     top: 50%;
     left: 50%;
     padding: 30px 0 50px 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     transition: all 0.7s;
     /* disables transition the other way */

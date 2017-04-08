@@ -1111,6 +1111,7 @@ var Game;
             this.questionTextSecondary.empty();
             this.hideMapMarkers();
             this.removeDistanceLine();
+            this.resetProgressBar();
         };
         GameController.prototype.begin = function () {
             this.clearQuestionDetails();
@@ -1137,7 +1138,7 @@ var Game;
                 setTimeout(function () {
                     _this.questionInnerContainer.removeClass('hidden');
                     _this.startQuestion();
-                }, 2000);
+                }, 1500);
             }, 2500);
         };
         GameController.prototype.startQuestion = function () {
@@ -1150,7 +1151,7 @@ var Game;
                 _this.questionInnerContainer.addClass('show-below');
                 _this.bindClickForQuestion(_this.currentQuestion);
                 _this.startTimer();
-            }, 2000);
+            }, 2200);
         };
         GameController.prototype.setTimerTo = function (seconds) {
             this.timerText.text(this.roundToTenths(seconds).toFixed(1) + 's');
@@ -1160,7 +1161,6 @@ var Game;
         };
         GameController.prototype.startTimer = function () {
             var _this = this;
-            this.resetProgressBar();
             var currentWidth = 0;
             this.timeLeft = this.questionTime;
             this.setTimerTo(0);
@@ -1177,6 +1177,8 @@ var Game;
                 }
                 else {
                     _this.stopTimer();
+                    _this.setProgressBarWidth('100%');
+                    _this.setTimerTo(0);
                     _this.map.unbind();
                     if (_this.currentQuestionNumber == _this.questionsPerLevel)
                         _this.handleLastQuestion();
@@ -1193,6 +1195,7 @@ var Game;
             this.setProgressBarColor(this.colors.green);
             this.progressBar.addClass('no-transitions');
             this.setProgressBarWidth('0');
+            this.setTimerTo(0);
             setTimeout(function () {
                 _this.progressBar.removeClass('no-transitions');
             }, 100);
@@ -1206,8 +1209,6 @@ var Game;
         GameController.prototype.stopTimer = function () {
             clearInterval(this.progressInterval);
             this.progressInterval = 0;
-            this.setTimerTo(0);
-            this.setProgressBarWidth('100%');
         };
         GameController.prototype.resetLevels = function () {
             this.currentLevel = 1;

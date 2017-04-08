@@ -1170,6 +1170,7 @@ module Game {
             this.questionTextSecondary.empty();
             this.hideMapMarkers();
             this.removeDistanceLine();
+            this.resetProgressBar();
         }
 
         private begin(): void {
@@ -1196,7 +1197,7 @@ module Game {
                 this.levelIntro.addClass('hide-intro');
                 setTimeout(() => {
                     this.questionInnerContainer.removeClass('hidden');
-                    this.startQuestion(); }, 2000);
+                    this.startQuestion(); }, 1500);
             }, 2500);
         }
 
@@ -1209,7 +1210,7 @@ module Game {
                 this.questionInnerContainer.addClass('show-below');
                 this.bindClickForQuestion(this.currentQuestion);
                 this.startTimer();
-            }, 2000);
+            }, 2200);
         }
 
         private setTimerTo(seconds: number): void {
@@ -1221,7 +1222,6 @@ module Game {
         }
 
         private startTimer(): void {
-            this.resetProgressBar();
             var currentWidth = 0;
             this.timeLeft = this.questionTime;
             this.setTimerTo(0);
@@ -1237,6 +1237,8 @@ module Game {
                     this.setTimerTo(this.timeLeft / 1000);
                 } else {
                     this.stopTimer();
+                    this.setProgressBarWidth('100%');
+                    this.setTimerTo(0);
                     this.map.unbind();
                     if (this.currentQuestionNumber == this.questionsPerLevel)
                         this.handleLastQuestion();
@@ -1256,6 +1258,7 @@ module Game {
             this.setProgressBarColor(this.colors.green);
             this.progressBar.addClass('no-transitions');
             this.setProgressBarWidth('0');
+            this.setTimerTo(0);
             setTimeout(() => {
                 this.progressBar.removeClass('no-transitions');
             }, 100);
@@ -1272,8 +1275,6 @@ module Game {
         private stopTimer(): void {
             clearInterval(this.progressInterval);
             this.progressInterval = 0;
-            this.setTimerTo(0);
-            this.setProgressBarWidth('100%');
         }
 
         private resetLevels(): void {
