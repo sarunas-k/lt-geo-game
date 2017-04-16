@@ -1059,7 +1059,7 @@ module Game {
                     this.currentQuestionNumber = 1;
                     modalManager.openModal(ModalType.BETWEEN_LEVELS, {
                         title: 'Tu perėjai miestų lygį!',
-                        content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h3>';
+                        content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h3>'
                     });
                 } else {
                     modalManager.openModal(ModalType.END, {

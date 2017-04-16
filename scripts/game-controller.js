@@ -32,7 +32,7 @@ var Game;
             this.totalPoints = 0;
             this.maxScoreForDistance = 50;
             this.distanceScoreCutoff = 50;
-            this.questionsPerLevel = 2;
+            this.questionsPerLevel = 10;
             this.levelsCount = 2;
             this.pointsToAdvance = ((this.maxScoreForDistance + (this.questionTime / 1000)) * this.questionsPerLevel) * 0.4;
             this.delayAfterQuestion = 3000;
