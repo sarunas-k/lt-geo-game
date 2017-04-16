@@ -114,13 +114,16 @@ body {
     z-index: 1000;
 }
 
+.map-game-wrapper .map-content .modal {
+    top: 20%;
+}
+
 .map-game-wrapper .map-content .modal.modal-start {
     top: 35%;
 }
 
-.map-game-wrapper .map-content .modal.modal-mid-game,
 .map-game-wrapper .map-content .modal.modal-gameover {
-    top: 20%;
+    top: 15%;
 }
 
 .map-game-wrapper .map-content .modal.modal-gameover .play-again-button,
@@ -325,7 +328,7 @@ body {
 
 .map-game-wrapper .level-intro {
     position: absolute;
-    width: 400px;
+    width: 450px;
     top: 50%;
     left: 50%;
     padding: 30px 0 50px 0;

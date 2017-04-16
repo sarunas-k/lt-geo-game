@@ -75,7 +75,7 @@ module Game {
             eventManager.subscribe(EventNames.ModalStartGame, () => {
                 this.begin();
             });
-            eventManager.subscribe(EventNames.ModalNextLevelClicked, () => {
+            eventManager.subscribe(EventNames.ModalNextQuestionClicked, () => {
                 this.currentQuestionNumber++;
                 this.begin();
             });
@@ -1044,7 +1044,7 @@ module Game {
                     else
                         title = 'Tu gali ir geriau.';
 
-                    modalManager.openModal(ModalType.MIDGAME, {
+                    modalManager.openModal(ModalType.BETWEEN_QUESTIONS, {
                         title: title,
                         content: 'Tiksli vieta buvo už <h3>' + distanceInKm + 'km</h3>'
                     });
@@ -1057,7 +1057,10 @@ module Game {
                 if (this.totalPoints >= this.pointsToAdvance) {
                     this.currentLevel++;
                     this.currentQuestionNumber = 1;
-                    this.begin();
+                    modalManager.openModal(ModalType.BETWEEN_LEVELS, {
+                        title: 'Tu perėjai miestų lygį!',
+                        content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h3>';
+                    });
                 } else {
                     modalManager.openModal(ModalType.END, {
                         title: 'Puikios pastangos, bet į kitą lygį neperėjai.',
@@ -1185,20 +1188,27 @@ module Game {
                 this.startQuestionWithIntro('Žinomos vietos');
                 return;
             }
-                
+
             this.startQuestion();
         }
 
         private startQuestionWithIntro(text: string): void {
-            this.updateQuestionCounter();
-            this.levelIntroText.text(text);
-            this.levelIntro.removeClass('hide-intro');
+            // Add some delay before level presentation
             setTimeout(() => {
-                this.levelIntro.addClass('hide-intro');
+                this.updateQuestionCounter();
+                this.levelIntroText.text(text);
+                this.levelIntro.removeClass('hide-intro');
+                // Add delay for viewing presentation text
                 setTimeout(() => {
-                    this.questionInnerContainer.removeClass('hidden');
-                    this.startQuestion(); }, 1500);
-            }, 2500);
+                    this.levelIntro.addClass('hide-intro');
+                    // Add delay between presentation and question
+                    setTimeout(() => {
+                        this.questionInnerContainer.removeClass('hidden');
+                        this.startQuestion();
+                    }, 1500);
+                }, 2500);
+            }, 1000);
+
         }
 
         private startQuestion(): void {
@@ -1243,7 +1253,7 @@ module Game {
                     if (this.currentQuestionNumber == this.questionsPerLevel)
                         this.handleLastQuestion();
                     else
-                        modalManager.openModal(ModalType.MIDGAME, {
+                        modalManager.openModal(ModalType.BETWEEN_QUESTIONS, {
                             title: 'Per lėtai...',
                             content: 'Kitą kartą paskubėk atsakyti.'
                         });

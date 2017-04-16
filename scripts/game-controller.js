@@ -32,7 +32,7 @@ var Game;
             this.totalPoints = 0;
             this.maxScoreForDistance = 50;
             this.distanceScoreCutoff = 50;
-            this.questionsPerLevel = 10;
+            this.questionsPerLevel = 2;
             this.levelsCount = 2;
             this.pointsToAdvance = ((this.maxScoreForDistance + (this.questionTime / 1000)) * this.questionsPerLevel) * 0.4;
             this.delayAfterQuestion = 3000;
@@ -55,7 +55,7 @@ var Game;
             eventManager.subscribe(Game.EventNames.ModalStartGame, function () {
                 _this.begin();
             });
-            eventManager.subscribe(Game.EventNames.ModalNextLevelClicked, function () {
+            eventManager.subscribe(Game.EventNames.ModalNextQuestionClicked, function () {
                 _this.currentQuestionNumber++;
                 _this.begin();
             });
@@ -994,7 +994,7 @@ var Game;
                         title = 'Neblogai! Galėtum dar geriau?';
                     else
                         title = 'Tu gali ir geriau.';
-                    modalManager.openModal(Game.ModalType.MIDGAME, {
+                    modalManager.openModal(Game.ModalType.BETWEEN_QUESTIONS, {
                         title: title,
                         content: 'Tiksli vieta buvo už <h3>' + distanceInKm + 'km</h3>'
                     });
@@ -1006,7 +1006,10 @@ var Game;
                 if (this.totalPoints >= this.pointsToAdvance) {
                     this.currentLevel++;
                     this.currentQuestionNumber = 1;
-                    this.begin();
+                    modalManager.openModal(Game.ModalType.BETWEEN_LEVELS, {
+                        title: 'Tu perėjai miestų lygį!',
+                        content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h3>'
+                    });
                 }
                 else {
                     modalManager.openModal(Game.ModalType.END, {
@@ -1130,16 +1133,18 @@ var Game;
         };
         GameController.prototype.startQuestionWithIntro = function (text) {
             var _this = this;
-            this.updateQuestionCounter();
-            this.levelIntroText.text(text);
-            this.levelIntro.removeClass('hide-intro');
             setTimeout(function () {
-                _this.levelIntro.addClass('hide-intro');
+                _this.updateQuestionCounter();
+                _this.levelIntroText.text(text);
+                _this.levelIntro.removeClass('hide-intro');
                 setTimeout(function () {
-                    _this.questionInnerContainer.removeClass('hidden');
-                    _this.startQuestion();
-                }, 1500);
-            }, 2500);
+                    _this.levelIntro.addClass('hide-intro');
+                    setTimeout(function () {
+                        _this.questionInnerContainer.removeClass('hidden');
+                        _this.startQuestion();
+                    }, 1500);
+                }, 2500);
+            }, 1000);
         };
         GameController.prototype.startQuestion = function () {
             var _this = this;
@@ -1183,7 +1188,7 @@ var Game;
                     if (_this.currentQuestionNumber == _this.questionsPerLevel)
                         _this.handleLastQuestion();
                     else
-                        modalManager.openModal(Game.ModalType.MIDGAME, {
+                        modalManager.openModal(Game.ModalType.BETWEEN_QUESTIONS, {
                             title: 'Per lėtai...',
                             content: 'Kitą kartą paskubėk atsakyti.'
                         });

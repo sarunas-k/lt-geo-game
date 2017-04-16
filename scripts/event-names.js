@@ -6,6 +6,6 @@ var Game;
         return EventNames;
     }());
     EventNames.ModalStartGame = 'modal.startGame';
-    EventNames.ModalNextLevelClicked = 'modal.nextLevel';
+    EventNames.ModalNextQuestionClicked = 'modal.nextQuestion';
     Game.EventNames = EventNames;
 })(Game || (Game = {}));

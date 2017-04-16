@@ -6,9 +6,10 @@ var Game;
             this.mapBackDrop = this.container.find('.map-backdrop');
             this.modalStart = this.container.find('.modal-start');
             this.startButton = this.modalStart.find('.start-button');
-            this.modalMidGame = this.container.find('.modal-mid-game');
-            this.questionDetails = this.modalMidGame.find('.question-details');
-            this.nextButton = this.modalMidGame.find('.next-button');
+            this.modalBetweenQuestions = this.container.find('.modal-between-questions');
+            this.nextQuestionButton = this.modalBetweenQuestions.find('.next-button');
+            this.modalBetweenLevels = this.container.find('.modal-between-levels');
+            this.nextLevelButton = this.modalBetweenLevels.find('.next-button');
             this.modalGameOver = this.container.find('.modal-gameover');
             this.gameResults = this.modalGameOver.find('.game-results');
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
@@ -22,8 +23,11 @@ var Game;
                 case ModalType.START:
                     modal = this.modalStart;
                     break;
-                case ModalType.MIDGAME:
-                    modal = this.modalMidGame;
+                case ModalType.BETWEEN_QUESTIONS:
+                    modal = this.modalBetweenQuestions;
+                    break;
+                case ModalType.BETWEEN_LEVELS:
+                    modal = this.modalBetweenLevels;
                     break;
                 case ModalType.END:
                     modal = this.modalGameOver;
@@ -45,8 +49,11 @@ var Game;
                 case ModalType.START:
                     modal = this.modalStart;
                     break;
-                case ModalType.MIDGAME:
-                    modal = this.modalMidGame;
+                case ModalType.BETWEEN_QUESTIONS:
+                    modal = this.modalBetweenQuestions;
+                    break;
+                case ModalType.BETWEEN_LEVELS:
+                    modal = this.modalBetweenLevels;
                     break;
                 case ModalType.END:
                     modal = this.modalGameOver;
@@ -81,10 +88,18 @@ var Game;
                     return false;
                 });
             }
-            else if (modal.is('.modal-mid-game')) {
-                this.nextButton.one('click', function (event) {
-                    _this.closeModal(ModalType.MIDGAME);
-                    eventManager.publish(Game.EventNames.ModalNextLevelClicked);
+            else if (modal.is('.modal-between-questions')) {
+                this.nextQuestionButton.one('click', function (event) {
+                    _this.closeModal(ModalType.BETWEEN_QUESTIONS);
+                    eventManager.publish(Game.EventNames.ModalNextQuestionClicked);
+                    event.preventDefault();
+                    return false;
+                });
+            }
+            else if (modal.is('.modal-between-levels')) {
+                this.nextLevelButton.one('click', function (event) {
+                    _this.closeModal(ModalType.BETWEEN_LEVELS);
+                    eventManager.publish(Game.EventNames.ModalStartGame);
                     event.preventDefault();
                     return false;
                 });
@@ -142,8 +157,9 @@ var Game;
     var ModalType;
     (function (ModalType) {
         ModalType[ModalType["START"] = 0] = "START";
-        ModalType[ModalType["MIDGAME"] = 1] = "MIDGAME";
-        ModalType[ModalType["END"] = 2] = "END";
+        ModalType[ModalType["BETWEEN_QUESTIONS"] = 1] = "BETWEEN_QUESTIONS";
+        ModalType[ModalType["BETWEEN_LEVELS"] = 2] = "BETWEEN_LEVELS";
+        ModalType[ModalType["END"] = 3] = "END";
     })(ModalType = Game.ModalType || (Game.ModalType = {}));
 })(Game || (Game = {}));
 var modalManager = new Game.ModalManager();

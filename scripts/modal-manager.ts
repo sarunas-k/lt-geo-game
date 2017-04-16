@@ -11,9 +11,10 @@ module Game {
         private mapBackDrop: JQuery;
         private modalStart: JQuery;
         private startButton: JQuery;
-        private modalMidGame: JQuery;
-        private questionDetails: JQuery;
-        private nextButton: JQuery;
+        private modalBetweenQuestions: JQuery;
+        private nextQuestionButton: JQuery;
+        private modalBetweenLevels: JQuery;
+        private nextLevelButton: JQuery;
         private modalGameOver: JQuery;
         private gameResults: JQuery;
         private playAgainButton: JQuery;
@@ -26,10 +27,12 @@ module Game {
             // Modal - Start
             this.modalStart = this.container.find('.modal-start');
             this.startButton = this.modalStart.find('.start-button');
-            // Modal - Mid game (between questions)
-            this.modalMidGame = this.container.find('.modal-mid-game');
-            this.questionDetails = this.modalMidGame.find('.question-details');
-            this.nextButton = this.modalMidGame.find('.next-button');
+            // Modal - Between questions
+            this.modalBetweenQuestions = this.container.find('.modal-between-questions');
+            this.nextQuestionButton = this.modalBetweenQuestions.find('.next-button');
+            // Modal - Between levels
+            this.modalBetweenLevels = this.container.find('.modal-between-levels');
+            this.nextLevelButton = this.modalBetweenLevels.find('.next-button');
             // Modal - Game over
             this.modalGameOver = this.container.find('.modal-gameover');
             this.gameResults = this.modalGameOver.find('.game-results');
@@ -45,8 +48,11 @@ module Game {
                 case ModalType.START:
                     modal = this.modalStart;
                     break;
-                case ModalType.MIDGAME:
-                    modal = this.modalMidGame;
+                case ModalType.BETWEEN_QUESTIONS:
+                    modal = this.modalBetweenQuestions;
+                    break;
+                case ModalType.BETWEEN_LEVELS:
+                    modal = this.modalBetweenLevels;
                     break;
                 case ModalType.END:
                     modal = this.modalGameOver;
@@ -62,7 +68,6 @@ module Game {
         private initModal(modal: JQuery, modalData: IModalData): void {
             this.insertData(modal, modalData);
             this.bindEventHandlers(modal);
-            
         }
 
         public closeModal(modalType: ModalType): void {
@@ -71,8 +76,11 @@ module Game {
                 case ModalType.START:
                     modal = this.modalStart;
                     break;
-                case ModalType.MIDGAME:
-                    modal = this.modalMidGame;
+                case ModalType.BETWEEN_QUESTIONS:
+                    modal = this.modalBetweenQuestions;
+                    break;
+                case ModalType.BETWEEN_LEVELS:
+                    modal = this.modalBetweenLevels;
                     break;
                 case ModalType.END:
                     modal = this.modalGameOver;
@@ -107,10 +115,17 @@ module Game {
                     event.preventDefault();
                     return false;
                 });
-            } else if (modal.is('.modal-mid-game')) {
-                this.nextButton.one('click', (event: JQueryEventObject) => {
-                    this.closeModal(ModalType.MIDGAME);
-                    eventManager.publish(EventNames.ModalNextLevelClicked);
+            } else if (modal.is('.modal-between-questions')) {
+                this.nextQuestionButton.one('click', (event: JQueryEventObject) => {
+                    this.closeModal(ModalType.BETWEEN_QUESTIONS);
+                    eventManager.publish(EventNames.ModalNextQuestionClicked);
+                    event.preventDefault();
+                    return false;
+                });
+            } else if (modal.is('.modal-between-levels')) {
+                this.nextLevelButton.one('click', (event: JQueryEventObject) => {
+                    this.closeModal(ModalType.BETWEEN_LEVELS);
+                    eventManager.publish(EventNames.ModalStartGame);
                     event.preventDefault();
                     return false;
                 });
@@ -176,7 +191,8 @@ module Game {
 
     export enum ModalType {
         START,
-        MIDGAME,
+        BETWEEN_QUESTIONS,
+        BETWEEN_LEVELS,
         END
     }
 
