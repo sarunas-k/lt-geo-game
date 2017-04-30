@@ -2,6 +2,7 @@
 /// <reference path="../node_modules/@types/facebook-js-sdk/index.d.ts" />
 /// <reference path="typings/event-manager.d.ts" />
 /// <reference path="event-names.ts" />
+/// <reference path="facebook-handler.ts" />
 
 module Game {
 
@@ -11,6 +12,7 @@ module Game {
         private mapBackDrop: JQuery;
         private modalStart: JQuery;
         private startButton: JQuery;
+        private loginButton: JQuery;
         private modalBetweenQuestions: JQuery;
         private nextQuestionButton: JQuery;
         private modalBetweenLevels: JQuery;
@@ -27,6 +29,7 @@ module Game {
             // Modal - Start
             this.modalStart = this.container.find('.modal-start');
             this.startButton = this.modalStart.find('.start-button');
+            this.loginButton = this.modalStart.find('.fb-button');
             // Modal - Between questions
             this.modalBetweenQuestions = this.container.find('.modal-between-questions');
             this.nextQuestionButton = this.modalBetweenQuestions.find('.next-button');
@@ -39,7 +42,7 @@ module Game {
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
             this.shareButton = this.modalGameOver.find('.share-button');
             this.shareUrl = 'https://www.ltgame.lt';
-            this.initFBSharing();
+            this.subscribeEvents();
         }
 
         public openModal(modalType: ModalType, modalData: IModalData): void {
@@ -65,9 +68,16 @@ module Game {
             this.addBackdrop();
         }
 
+        private subscribeEvents(): void {
+            eventManager.subscribe(EventNames.FacebookUserLoggedIn, () => {
+                this.loginButton.remove();
+                this.startButton.text('Pradėti');
+            });
+        }
+
         private initModal(modal: JQuery, modalData: IModalData): void {
             this.insertData(modal, modalData);
-            this.bindEventHandlers(modal);
+            this.bindModalEventHandlers(modal);
         }
 
         public closeModal(modalType: ModalType): void {
@@ -92,60 +102,41 @@ module Game {
             this.removeBackdrop();
         }
 
-        private initFBSharing(): void {
-            $.ajaxSetup({
-                cache: true
-            });
-            $.getScript("//connect.facebook.net/lt_LT/sdk.js", () => {
-                FB.init({
-                    appId: '127428917793107',
-                    version: 'v2.7',
-                    status: true,
-                    cookie: true,
-                    xfbml: true
-                });
-            });
-        }
-
-        private bindEventHandlers(modal: JQuery): void {
+        private bindModalEventHandlers(modal: JQuery): void {
             if (modal.is('.modal-start')) {
                 this.startButton.one('click', (event: JQueryEventObject) => {
+                    event.preventDefault();
                     this.closeModal(ModalType.START);
                     eventManager.publish(EventNames.ModalStartGame);
-                    event.preventDefault();
                     return false;
                 });
+                this.loginButton.on('click', () => facebookHandler.login());
+                
             } else if (modal.is('.modal-between-questions')) {
                 this.nextQuestionButton.one('click', (event: JQueryEventObject) => {
+                    event.preventDefault();
                     this.closeModal(ModalType.BETWEEN_QUESTIONS);
                     eventManager.publish(EventNames.ModalNextQuestionClicked);
-                    event.preventDefault();
                     return false;
                 });
             } else if (modal.is('.modal-between-levels')) {
                 this.nextLevelButton.one('click', (event: JQueryEventObject) => {
+                    event.preventDefault();
                     this.closeModal(ModalType.BETWEEN_LEVELS);
                     eventManager.publish(EventNames.ModalStartGame);
-                    event.preventDefault();
                     return false;
                 });
             } else if (modal.is('.modal-gameover')) {
                 this.playAgainButton.one('click', (event: JQueryEventObject) => {
+                    event.preventDefault();
                     this.closeModal(ModalType.END);
                     eventManager.publish(EventNames.ModalStartGame);
-                    event.preventDefault();
                     return false;
                 });
 
-                this.shareButton.on('click', (event: JQueryEventObject) => {
-                    var title: string = modal.find('.modal-body .modal-body-inner').text();
-                    FB.ui({
-                        method: 'share',
-                        href: this.shareUrl,
-                        title: title.length ? title : 'LT Geo Game'
-                    }, function (response: any) {});
-                });
+                this.shareButton.on('click', () => facebookHandler.openShareDialog(this.shareUrl));
             }
+
         }
 
         private insertData(modal: JQuery, modalData: IModalData): void {

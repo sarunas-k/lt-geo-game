@@ -42,6 +42,10 @@ var Game;
                 green: '#5cb85c',
                 yellow: '#ffae22'
             };
+            this.isLoggedIn = false;
+            this.facebookUserContainer = this.map.find('.facebook-user-container');
+            this.facebookUserImage = this.facebookUserContainer.find('.facebook-user-image');
+            this.facebookUserName = this.facebookUserContainer.find('.facebook-user-name');
             this.addDistricts();
             this.addLocations();
             this.addQuestions();
@@ -50,16 +54,6 @@ var Game;
                 title: 'Lietuvos pažintinis žaidimas'
             });
         }
-        GameController.prototype.subscribeEvents = function () {
-            var _this = this;
-            eventManager.subscribe(Game.EventNames.ModalStartGame, function () {
-                _this.begin();
-            });
-            eventManager.subscribe(Game.EventNames.ModalNextQuestionClicked, function () {
-                _this.currentQuestionNumber++;
-                _this.begin();
-            });
-        };
         GameController.prototype.addDistricts = function () {
             this.districtsList = [{
                     name: 'Alytaus apskritis'
@@ -869,97 +863,6 @@ var Game;
                 }
             ];
         };
-        GameController.prototype.enableDeveloperMode = function () {
-            var _this = this;
-            this.map.css('background', 'url(img/map-dev.png)');
-            this.map.on('click', function (event) {
-                _this.clickCoordinates = _this.getCoordinatesRelativeToImage(event.pageX, event.pageY);
-                _this.coordinatesText.text('X=' + _this.clickCoordinates.x + ' Y=' + _this.clickCoordinates.y);
-            });
-            var editor = $('.editor').show();
-            var moveArrows = editor.find('.move-panel span');
-            var menuTabs = editor.find('.menu-tab');
-            var tabLocations = editor.find('.locations-editor');
-            var tabQuestions = editor.find('.questions-editor');
-            var menuItems = editor.find('.nav li');
-            moveArrows.on('click', function (event) {
-                var target = $(event.currentTarget);
-                editor.css({
-                    top: 'unset',
-                    left: 'unset',
-                    right: 'unset',
-                    bottom: 'unset'
-                });
-                if (target.is('.top-left')) {
-                    editor.css({
-                        top: 0,
-                        left: 0
-                    });
-                }
-                else if (target.is('.top-right')) {
-                    editor.css({
-                        top: 0,
-                        right: 0
-                    });
-                }
-                else if (target.is('.bottom-left')) {
-                    editor.css({
-                        bottom: 0,
-                        left: 0
-                    });
-                }
-                else if (target.is('.bottom-right')) {
-                    editor.css({
-                        bottom: 0,
-                        right: 0
-                    });
-                }
-            });
-            menuItems.on('click', function (event) {
-                var element = $(event.currentTarget);
-                var isActive = element.is('.active');
-                if (isActive)
-                    return;
-                menuTabs.hide();
-                if (element.is('.item-locations')) {
-                    tabLocations.show();
-                }
-                else if (element.is('.item-questions')) {
-                    tabQuestions.show();
-                }
-                menuItems.each(function (i, e) {
-                    var element = $(e);
-                    if (element.is('.active'))
-                        element.removeClass('active');
-                });
-                element.addClass('active');
-            });
-            tabLocations.show();
-            var formLocation = tabLocations.find('form');
-            var selectDistrict = formLocation.find('select');
-            var inputName = formLocation.find('.name');
-            var inputX = formLocation.find('.coordx');
-            var inputY = formLocation.find('.coordy');
-            var outputLocation = tabLocations.find('.output');
-            $.each(this.districtsList, function (index, district) {
-                selectDistrict.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + district.name + '</option>');
-            });
-            formLocation.submit(function (event) {
-                event.preventDefault();
-                outputLocation.html('{ name: \'' + inputName.val() + '\', district: this.districts[' + selectDistrict.val() + '], x: ' + inputX.val() + ', y: ' + inputY.val() + ' }');
-            });
-            var formQuestion = tabQuestions.find('form');
-            var selectLocations = formQuestion.find('select');
-            var inputQuestion = formQuestion.find('.question-text');
-            var outputQuestion = tabQuestions.find('.output');
-            $.each(this.locationsList, function (index, location) {
-                selectLocations.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + location.name + '</option>');
-            });
-            formQuestion.submit(function (event) {
-                event.preventDefault();
-                outputQuestion.html('{ text: \'' + inputQuestion.val() + '\', location: this.locations[' + selectLocations.val() + '] }');
-            });
-        };
         GameController.prototype.bindClickForQuestion = function (question) {
             var _this = this;
             this.map.one('click', function (event) {
@@ -1014,8 +917,7 @@ var Game;
                 else {
                     modalManager.openModal(Game.ModalType.END, {
                         title: 'Puikios pastangos, bet į kitą lygį neperėjai.',
-                        content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) +
-                            '.</h3><h4>Surink ' + this.pointsToAdvance + ', kad pereitum į kitą lygį.</h4>'
+                        content: this.getModalContentForGameEnd(false)
                     });
                     this.resetLevels();
                 }
@@ -1023,10 +925,21 @@ var Game;
             else {
                 modalManager.openModal(Game.ModalType.END, {
                     title: 'Sveikinam!',
-                    content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h3>'
+                    content: this.getModalContentForGameEnd(true)
                 });
                 this.resetLevels();
             }
+        };
+        GameController.prototype.getModalContentForGameEnd = function (isLastLevel) {
+            var content = '<h2>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h2>';
+            if (this.isLoggedIn && this.totalPoints > this.playerData.score.score) {
+                content += '<h3>Naujas tavo rekordas!</h3>';
+                facebookHandler.updateScore(this.totalPoints);
+                this.playerData.score.score = this.totalPoints;
+            }
+            if (!isLastLevel)
+                content += '<h4>Surink ' + this.pointsToAdvance + ', kad pereitum į kitą lygį.</h4>';
+            return content;
         };
         GameController.prototype.addToScore = function (number) {
             var _this = this;
@@ -1218,6 +1131,118 @@ var Game;
         GameController.prototype.resetLevels = function () {
             this.currentLevel = 1;
             this.currentQuestionNumber = 1;
+        };
+        GameController.prototype.subscribeEvents = function () {
+            var _this = this;
+            eventManager.subscribe(Game.EventNames.ModalStartGame, function () { return _this.begin(); });
+            eventManager.subscribe(Game.EventNames.ModalNextQuestionClicked, function () {
+                _this.currentQuestionNumber++;
+                _this.begin();
+            });
+            eventManager.subscribe(Game.EventNames.FacebookUserLoggedIn, function () { return facebookHandler.loadUserData(); });
+            eventManager.subscribe(Game.EventNames.FacebookUserDataReady, function () {
+                _this.isLoggedIn = true;
+                _this.playerData = facebookHandler.getUserData();
+                _this.enableLoggedInMode();
+            });
+        };
+        GameController.prototype.enableLoggedInMode = function () {
+            if (!this.playerData)
+                return;
+            this.facebookUserImage.attr('src', this.playerData.imageUrl);
+            this.facebookUserName.text(this.playerData.name);
+            this.facebookUserContainer.show();
+        };
+        GameController.prototype.enableDeveloperMode = function () {
+            var _this = this;
+            this.map.css('background', 'url(img/map-dev.png)');
+            this.map.on('click', function (event) {
+                _this.clickCoordinates = _this.getCoordinatesRelativeToImage(event.pageX, event.pageY);
+                _this.coordinatesText.text('X=' + _this.clickCoordinates.x + ' Y=' + _this.clickCoordinates.y);
+            });
+            var editor = $('.editor').show();
+            var moveArrows = editor.find('.move-panel span');
+            var menuTabs = editor.find('.menu-tab');
+            var tabLocations = editor.find('.locations-editor');
+            var tabQuestions = editor.find('.questions-editor');
+            var menuItems = editor.find('.nav li');
+            moveArrows.on('click', function (event) {
+                var target = $(event.currentTarget);
+                editor.css({
+                    top: 'unset',
+                    left: 'unset',
+                    right: 'unset',
+                    bottom: 'unset'
+                });
+                if (target.is('.top-left')) {
+                    editor.css({
+                        top: 0,
+                        left: 0
+                    });
+                }
+                else if (target.is('.top-right')) {
+                    editor.css({
+                        top: 0,
+                        right: 0
+                    });
+                }
+                else if (target.is('.bottom-left')) {
+                    editor.css({
+                        bottom: 0,
+                        left: 0
+                    });
+                }
+                else if (target.is('.bottom-right')) {
+                    editor.css({
+                        bottom: 0,
+                        right: 0
+                    });
+                }
+            });
+            menuItems.on('click', function (event) {
+                var element = $(event.currentTarget);
+                var isActive = element.is('.active');
+                if (isActive)
+                    return;
+                menuTabs.hide();
+                if (element.is('.item-locations')) {
+                    tabLocations.show();
+                }
+                else if (element.is('.item-questions')) {
+                    tabQuestions.show();
+                }
+                menuItems.each(function (i, e) {
+                    var element = $(e);
+                    if (element.is('.active'))
+                        element.removeClass('active');
+                });
+                element.addClass('active');
+            });
+            tabLocations.show();
+            var formLocation = tabLocations.find('form');
+            var selectDistrict = formLocation.find('select');
+            var inputName = formLocation.find('.name');
+            var inputX = formLocation.find('.coordx');
+            var inputY = formLocation.find('.coordy');
+            var outputLocation = tabLocations.find('.output');
+            $.each(this.districtsList, function (index, district) {
+                selectDistrict.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + district.name + '</option>');
+            });
+            formLocation.submit(function (event) {
+                event.preventDefault();
+                outputLocation.html('{ name: \'' + inputName.val() + '\', district: this.districts[' + selectDistrict.val() + '], x: ' + inputX.val() + ', y: ' + inputY.val() + ' }');
+            });
+            var formQuestion = tabQuestions.find('form');
+            var selectLocations = formQuestion.find('select');
+            var inputQuestion = formQuestion.find('.question-text');
+            var outputQuestion = tabQuestions.find('.output');
+            $.each(this.locationsList, function (index, location) {
+                selectLocations.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + location.name + '</option>');
+            });
+            formQuestion.submit(function (event) {
+                event.preventDefault();
+                outputQuestion.html('{ text: \'' + inputQuestion.val() + '\', location: this.locations[' + selectLocations.val() + '] }');
+            });
         };
         GameController.prototype.correctLTEnding = function (number) {
             var ending = '';

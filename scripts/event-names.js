@@ -7,5 +7,7 @@ var Game;
     }());
     EventNames.ModalStartGame = 'modal.startGame';
     EventNames.ModalNextQuestionClicked = 'modal.nextQuestion';
+    EventNames.FacebookUserDataReady = 'fb.userDataReady';
+    EventNames.FacebookUserLoggedIn = 'fb.userLoggedIn';
     Game.EventNames = EventNames;
 })(Game || (Game = {}));

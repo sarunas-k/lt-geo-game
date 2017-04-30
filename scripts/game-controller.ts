@@ -1,4 +1,5 @@
 /// <reference path="typings/game-controller.d.ts" />
+/// <reference path="facebook-handler.ts" />
 
 module Game {
 
@@ -59,6 +60,12 @@ module Game {
             yellow: '#ffae22'
         };
 
+        private isLoggedIn: boolean = false;
+        private playerData: IFacebookUser;
+        private facebookUserContainer: JQuery = this.map.find('.facebook-user-container');
+        private facebookUserImage: JQuery = this.facebookUserContainer.find('.facebook-user-image');
+        private facebookUserName: JQuery = this.facebookUserContainer.find('.facebook-user-name');
+
         constructor() {
             this.addDistricts();
             this.addLocations();
@@ -69,16 +76,6 @@ module Game {
                     title: 'Lietuvos pažintinis žaidimas'
                 });
             //this.enableDeveloperMode();
-        }
-
-        private subscribeEvents(): void {
-            eventManager.subscribe(EventNames.ModalStartGame, () => {
-                this.begin();
-            });
-            eventManager.subscribe(EventNames.ModalNextQuestionClicked, () => {
-                this.currentQuestionNumber++;
-                this.begin();
-            });
         }
 
         private addDistricts(): void {
@@ -895,107 +892,6 @@ module Game {
             ];
         }
 
-        private enableDeveloperMode(): void {
-            this.map.css('background', 'url(img/map-dev.png)');
-            this.map.on('click', (event: JQueryEventObject) => {
-                this.clickCoordinates = this.getCoordinatesRelativeToImage(event.pageX, event.pageY);
-                this.coordinatesText.text('X=' + this.clickCoordinates.x + ' Y=' + this.clickCoordinates.y);
-            });
-            var editor: JQuery = $('.editor').show();
-            var moveArrows: JQuery = editor.find('.move-panel span');
-            var menuTabs: JQuery = editor.find('.menu-tab');
-            var tabLocations: JQuery = editor.find('.locations-editor');
-            var tabQuestions: JQuery = editor.find('.questions-editor');
-            var menuItems: JQuery = editor.find('.nav li');
-
-            moveArrows.on('click', (event: JQueryEventObject) => {
-                var target: JQuery = $(event.currentTarget);
-                editor.css({
-                    top: 'unset',
-                    left: 'unset',
-                    right: 'unset',
-                    bottom: 'unset'
-                });
-                if (target.is('.top-left')) {
-                    editor.css({
-                        top: 0,
-                        left: 0
-                    });
-                } else if (target.is('.top-right')) {
-                    editor.css({
-                        top: 0,
-                        right: 0
-                    });
-                } else if (target.is('.bottom-left')) {
-                    editor.css({
-                        bottom: 0,
-                        left: 0
-                    });
-                } else if (target.is('.bottom-right')) {
-                    editor.css({
-                        bottom: 0,
-                        right: 0
-                    });
-                }
-            });
-
-            menuItems.on('click', (event: JQueryEventObject) => {
-                var element: JQuery = $(event.currentTarget);
-                var isActive: boolean = element.is('.active');
-                if (isActive)
-                    return;
-
-                menuTabs.hide();
-                if (element.is('.item-locations')) {
-                    tabLocations.show();
-                } else if (element.is('.item-questions')) {
-                    tabQuestions.show();
-                }
-
-                menuItems.each((i: number, e: HTMLElement) => {
-                    var element: JQuery = $(e);
-                    if (element.is('.active'))
-                        element.removeClass('active');
-                });
-
-                element.addClass('active');
-            });
-
-            tabLocations.show();
-
-            // TAB 1
-            var formLocation: JQuery = tabLocations.find('form');
-            var selectDistrict: JQuery = formLocation.find('select');
-            var inputName: JQuery = formLocation.find('.name');
-            var inputX: JQuery = formLocation.find('.coordx');
-            var inputY: JQuery = formLocation.find('.coordy');
-            var outputLocation: JQuery = tabLocations.find('.output');
-
-            $.each(this.districtsList, (index: number, district: IDistrict) => {
-                selectDistrict.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + district.name + '</option>');
-            });
-
-            formLocation.submit((event: JQueryEventObject) => {
-                event.preventDefault();
-                outputLocation.html('{ name: \'' + inputName.val() + '\', district: this.districts[' + selectDistrict.val() + '], x: ' + inputX.val() + ', y: ' + inputY.val() + ' }');
-            });
-
-            // TAB 2
-            var formQuestion: JQuery = tabQuestions.find('form');
-            var selectLocations: JQuery = formQuestion.find('select');
-            var inputQuestion: JQuery = formQuestion.find('.question-text');
-            var outputQuestion: JQuery = tabQuestions.find('.output');
-
-            $.each(this.locationsList, (index: number, location: ILocation) => {
-                selectLocations.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + location.name + '</option>');
-            });
-
-            formQuestion.submit((event: JQueryEventObject) => {
-                event.preventDefault();
-                outputQuestion.html('{ text: \'' + inputQuestion.val() + '\', location: this.locations[' + selectLocations.val() + '] }');
-            });
-        }
-
         private bindClickForQuestion(question: IQuestion): void {
             this.map.one('click', (event: JQueryEventObject) => {
                 this.handleAnswerClick(event.pageX, event.pageY, question);
@@ -1064,18 +960,31 @@ module Game {
                 } else {
                     modalManager.openModal(ModalType.END, {
                         title: 'Puikios pastangos, bet į kitą lygį neperėjai.',
-                        content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) +
-                            '.</h3><h4>Surink ' + this.pointsToAdvance + ', kad pereitum į kitą lygį.</h4>'
+                        content: this.getModalContentForGameEnd(false)
                     });
                     this.resetLevels();
                 }
             } else {
                 modalManager.openModal(ModalType.END, {
                     title: 'Sveikinam!',
-                    content: '<h3>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h3>'
+                    content: this.getModalContentForGameEnd(true)
                 });
                 this.resetLevels();
             }
+        }
+
+        private getModalContentForGameEnd(isLastLevel: boolean): string {
+            var content: string = '<h2>Tavo rezultatas ' + this.totalPoints + ' tašk' + this.correctLTEnding(this.totalPoints) + '.</h2>';
+            if (this.isLoggedIn && this.totalPoints > this.playerData.score.score) {
+                content += '<h3>Naujas tavo rekordas!</h3>';
+                facebookHandler.updateScore(this.totalPoints);
+                this.playerData.score.score = this.totalPoints;
+            }
+
+            if (!isLastLevel)
+                content += '<h4>Surink ' + this.pointsToAdvance + ', kad pereitum į kitą lygį.</h4>';
+
+            return content;
         }
 
         private addToScore(number: number): void {
@@ -1290,6 +1199,131 @@ module Game {
         private resetLevels(): void {
             this.currentLevel = 1;
             this.currentQuestionNumber = 1;
+        }
+
+        private subscribeEvents(): void {
+            eventManager.subscribe(EventNames.ModalStartGame, () => this.begin());
+            eventManager.subscribe(EventNames.ModalNextQuestionClicked, () => {
+                this.currentQuestionNumber++;
+                this.begin();
+            });
+            eventManager.subscribe(EventNames.FacebookUserLoggedIn, () => facebookHandler.loadUserData());
+            eventManager.subscribe(EventNames.FacebookUserDataReady, () => {
+                this.isLoggedIn = true;
+                this.playerData = facebookHandler.getUserData();
+                this.enableLoggedInMode();
+            });
+        }
+
+        private enableLoggedInMode(): void {
+            if (!this.playerData)
+                return;
+            
+            this.facebookUserImage.attr('src', this.playerData.imageUrl);
+            this.facebookUserName.text(this.playerData.name);
+            this.facebookUserContainer.show();
+            // $('.api-test-button').show().on('click', () => facebookHandler.sendTest());
+        }
+
+        private enableDeveloperMode(): void {
+            this.map.css('background', 'url(img/map-dev.png)');
+            this.map.on('click', (event: JQueryEventObject) => {
+                this.clickCoordinates = this.getCoordinatesRelativeToImage(event.pageX, event.pageY);
+                this.coordinatesText.text('X=' + this.clickCoordinates.x + ' Y=' + this.clickCoordinates.y);
+            });
+            var editor: JQuery = $('.editor').show();
+            var moveArrows: JQuery = editor.find('.move-panel span');
+            var menuTabs: JQuery = editor.find('.menu-tab');
+            var tabLocations: JQuery = editor.find('.locations-editor');
+            var tabQuestions: JQuery = editor.find('.questions-editor');
+            var menuItems: JQuery = editor.find('.nav li');
+
+            moveArrows.on('click', (event: JQueryEventObject) => {
+                var target: JQuery = $(event.currentTarget);
+                editor.css({
+                    top: 'unset',
+                    left: 'unset',
+                    right: 'unset',
+                    bottom: 'unset'
+                });
+                if (target.is('.top-left')) {
+                    editor.css({
+                        top: 0,
+                        left: 0
+                    });
+                } else if (target.is('.top-right')) {
+                    editor.css({
+                        top: 0,
+                        right: 0
+                    });
+                } else if (target.is('.bottom-left')) {
+                    editor.css({
+                        bottom: 0,
+                        left: 0
+                    });
+                } else if (target.is('.bottom-right')) {
+                    editor.css({
+                        bottom: 0,
+                        right: 0
+                    });
+                }
+            });
+
+            menuItems.on('click', (event: JQueryEventObject) => {
+                var element: JQuery = $(event.currentTarget);
+                var isActive: boolean = element.is('.active');
+                if (isActive)
+                    return;
+
+                menuTabs.hide();
+                if (element.is('.item-locations')) {
+                    tabLocations.show();
+                } else if (element.is('.item-questions')) {
+                    tabQuestions.show();
+                }
+
+                menuItems.each((i: number, e: HTMLElement) => {
+                    var element: JQuery = $(e);
+                    if (element.is('.active'))
+                        element.removeClass('active');
+                });
+
+                element.addClass('active');
+            });
+
+            tabLocations.show();
+
+            // TAB 1
+            var formLocation: JQuery = tabLocations.find('form');
+            var selectDistrict: JQuery = formLocation.find('select');
+            var inputName: JQuery = formLocation.find('.name');
+            var inputX: JQuery = formLocation.find('.coordx');
+            var inputY: JQuery = formLocation.find('.coordy');
+            var outputLocation: JQuery = tabLocations.find('.output');
+
+            $.each(this.districtsList, (index: number, district: IDistrict) => {
+                selectDistrict.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + district.name + '</option>');
+            });
+
+            formLocation.submit((event: JQueryEventObject) => {
+                event.preventDefault();
+                outputLocation.html('{ name: \'' + inputName.val() + '\', district: this.districts[' + selectDistrict.val() + '], x: ' + inputX.val() + ', y: ' + inputY.val() + ' }');
+            });
+
+            // TAB 2
+            var formQuestion: JQuery = tabQuestions.find('form');
+            var selectLocations: JQuery = formQuestion.find('select');
+            var inputQuestion: JQuery = formQuestion.find('.question-text');
+            var outputQuestion: JQuery = tabQuestions.find('.output');
+
+            $.each(this.locationsList, (index: number, location: ILocation) => {
+                selectLocations.append('<option value="' + index + '" ' + (index == 0 ? 'selected' : '') + '>' + location.name + '</option>');
+            });
+
+            formQuestion.submit((event: JQueryEventObject) => {
+                event.preventDefault();
+                outputQuestion.html('{ text: \'' + inputQuestion.val() + '\', location: this.locations[' + selectLocations.val() + '] }');
+            });
         }
 
         private correctLTEnding(number: number): string {

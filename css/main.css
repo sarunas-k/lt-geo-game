@@ -119,8 +119,26 @@ body {
 }
 
 .map-game-wrapper .map-content .modal.modal-start {
-    top: 35%;
+    top: 30%;
 }
+
+.map-game-wrapper .map-content .modal.modal-start .modal-footer .button-container {
+    padding-bottom: 5px;
+}
+
+.map-game-wrapper .map-content .modal.modal-start .modal-footer .button-container button {
+    text-transform: none;
+}
+
+/*.map-game-wrapper .map-content .modal.modal-start .start-button,
+.map-game-wrapper .map-content .modal.modal-start .fb-button {
+    float: left;
+    width: 172px;
+}
+
+.map-game-wrapper .map-content .modal.modal-start .fb-button {
+    margin: 0 0 0 10px;
+}*/
 
 .map-game-wrapper .map-content .modal.modal-gameover {
     top: 15%;
@@ -165,6 +183,12 @@ body {
 .map-game-wrapper .map-content .modal-body-inner {
     border-bottom-width: 1px;
     font-size: 15px;
+}
+
+.map-game-wrapper .map-content .modal-body-inner h2 {
+    color: #fffbd5;
+    margin-top: 10px;
+    font-size: 28px;
 }
 
 .map-game-wrapper .map-content .modal-body-inner h3 {
@@ -221,6 +245,45 @@ body {
     left: 10px;
     font-weight: bold;
     color: #545454;
+}
+
+.map-game-wrapper .map-content .facebook-user-container {
+    height: 40px;
+    max-width: 200px;
+    color: #FFFFFF;
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-radius: 8px;
+    position: fixed;
+    top: 3px;
+    right: -5px;
+    padding: 5px;
+    background: rgb(18, 123, 163);
+    /* Old browsers */
+    background: -moz-linear-gradient(bottom, #158cba 1%, rgb(18, 123, 163) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(bottom, #158cba 1%, rgb(18, 123, 163) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to top, #158cba 1%, rgb(18, 123, 163) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#158cba', endColorstr='#11556f', GradientType=0);
+    /* IE6-9 */
+    display: none;
+}
+
+.map-game-wrapper .map-content .facebook-user-container .facebook-user-image {
+    height: 100%;
+}
+
+.map-game-wrapper .map-content .facebook-user-container .facebook-user-name {
+    padding: 0 20px;
+    vertical-align: middle;
+}
+
+.map-game-wrapper .map-content .api-test-button {
+    display: none;
 }
 
 .map-game-wrapper .map-footer {

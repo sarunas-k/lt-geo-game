@@ -54,7 +54,12 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success btn-lg btn-block start-button">Pradėti</button>
+                            <div class="button-container">
+                                <button type="button" class="btn btn-success btn-lg btn-block start-button">Žaisti be prisijungimo</button>
+                            </div>
+                            <div class="button-container">
+                                <button type="button" class="btn btn-primary btn-lg btn-block fb-button">Prisijungti per Facebook</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,6 +127,11 @@
             <div class="level-intro hide-intro">
                 <h1 class="cool-text-shadow"></h1>
             </div>
+            <div class="facebook-user-container">
+                <img src="" class="facebook-user-image" />
+                <span class="facebook-user-name"></span>
+            </div>
+            <!--<button class="api-test-button">Send</button>-->
         </div>
         <div class="map-footer">
             <div class="game-score">
@@ -190,6 +200,7 @@
 
     <script src="scripts/event-names.js"></script>
     <script src="scripts/event-manager.js"></script>
+    <script src="scripts/facebook-handler.js"></script>
     <script src="scripts/modal-manager.js"></script>
     <script src="scripts/game-controller.js"></script>
 

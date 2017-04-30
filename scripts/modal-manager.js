@@ -6,6 +6,7 @@ var Game;
             this.mapBackDrop = this.container.find('.map-backdrop');
             this.modalStart = this.container.find('.modal-start');
             this.startButton = this.modalStart.find('.start-button');
+            this.loginButton = this.modalStart.find('.fb-button');
             this.modalBetweenQuestions = this.container.find('.modal-between-questions');
             this.nextQuestionButton = this.modalBetweenQuestions.find('.next-button');
             this.modalBetweenLevels = this.container.find('.modal-between-levels');
@@ -15,7 +16,7 @@ var Game;
             this.playAgainButton = this.modalGameOver.find('.play-again-button');
             this.shareButton = this.modalGameOver.find('.share-button');
             this.shareUrl = 'https://www.ltgame.lt';
-            this.initFBSharing();
+            this.subscribeEvents();
         }
         ModalManager.prototype.openModal = function (modalType, modalData) {
             var modal;
@@ -39,9 +40,16 @@ var Game;
             this.setVisibility(modal, true);
             this.addBackdrop();
         };
+        ModalManager.prototype.subscribeEvents = function () {
+            var _this = this;
+            eventManager.subscribe(Game.EventNames.FacebookUserLoggedIn, function () {
+                _this.loginButton.remove();
+                _this.startButton.text('Pradėti');
+            });
+        };
         ModalManager.prototype.initModal = function (modal, modalData) {
             this.insertData(modal, modalData);
-            this.bindEventHandlers(modal);
+            this.bindModalEventHandlers(modal);
         };
         ModalManager.prototype.closeModal = function (modalType) {
             var modal;
@@ -64,61 +72,41 @@ var Game;
             this.setVisibility(modal, false);
             this.removeBackdrop();
         };
-        ModalManager.prototype.initFBSharing = function () {
-            $.ajaxSetup({
-                cache: true
-            });
-            $.getScript("//connect.facebook.net/lt_LT/sdk.js", function () {
-                FB.init({
-                    appId: '127428917793107',
-                    version: 'v2.7',
-                    status: true,
-                    cookie: true,
-                    xfbml: true
-                });
-            });
-        };
-        ModalManager.prototype.bindEventHandlers = function (modal) {
+        ModalManager.prototype.bindModalEventHandlers = function (modal) {
             var _this = this;
             if (modal.is('.modal-start')) {
                 this.startButton.one('click', function (event) {
+                    event.preventDefault();
                     _this.closeModal(ModalType.START);
                     eventManager.publish(Game.EventNames.ModalStartGame);
-                    event.preventDefault();
                     return false;
                 });
+                this.loginButton.on('click', function () { return facebookHandler.login(); });
             }
             else if (modal.is('.modal-between-questions')) {
                 this.nextQuestionButton.one('click', function (event) {
+                    event.preventDefault();
                     _this.closeModal(ModalType.BETWEEN_QUESTIONS);
                     eventManager.publish(Game.EventNames.ModalNextQuestionClicked);
-                    event.preventDefault();
                     return false;
                 });
             }
             else if (modal.is('.modal-between-levels')) {
                 this.nextLevelButton.one('click', function (event) {
+                    event.preventDefault();
                     _this.closeModal(ModalType.BETWEEN_LEVELS);
                     eventManager.publish(Game.EventNames.ModalStartGame);
-                    event.preventDefault();
                     return false;
                 });
             }
             else if (modal.is('.modal-gameover')) {
                 this.playAgainButton.one('click', function (event) {
+                    event.preventDefault();
                     _this.closeModal(ModalType.END);
                     eventManager.publish(Game.EventNames.ModalStartGame);
-                    event.preventDefault();
                     return false;
                 });
-                this.shareButton.on('click', function (event) {
-                    var title = modal.find('.modal-body .modal-body-inner').text();
-                    FB.ui({
-                        method: 'share',
-                        href: _this.shareUrl,
-                        title: title.length ? title : 'LT Geo Game'
-                    }, function (response) { });
-                });
+                this.shareButton.on('click', function () { return facebookHandler.openShareDialog(_this.shareUrl); });
             }
         };
         ModalManager.prototype.insertData = function (modal, modalData) {
